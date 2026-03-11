@@ -1,7 +1,9 @@
-package java.board;
+package com.example.minesweeper.board;
 
-import java.tile.Mine;
-import java.tile.Tile;
+import com.example.minesweeper.enums.TileStatus;
+import com.example.minesweeper.executor.Executor;
+import com.example.minesweeper.tile.Mine;
+import com.example.minesweeper.tile.Tile;
 
 
 import java.util.Random;
@@ -14,6 +16,8 @@ public class Board {
     private int mineNum;
     private boolean shielded;
 
+    private Executor executor;
+
     private Board()
     {
         row = 0;
@@ -21,6 +25,17 @@ public class Board {
         mineNum = 0;
         shielded = false;
     }
+
+    public void setExecutor(Executor executor)
+    {
+        this.executor = executor;
+    }
+
+    public void setTileAt(int x, int y, TileStatus status, int num)
+    {
+        executor.setTileAt(x,y,status,num);
+    }
+
 
     public void createBoard(String difficulty,int x,int y) {
         shielded = false;
@@ -58,15 +73,16 @@ public class Board {
         for(int i = 0; i < row; i++){
             for(int j = 0; j < column; j++){
                 tiles[i][j] = new Tile(this,i,j);
+                isMine[i][j] = false;
             }
         }
-
+        //System.out.println("Debug pos 1");
         //generate mines
         for(int i = 0;i < this.mineNum;i++)
         {
             randX = random.nextInt(this.row);
             randY = random.nextInt(this.column);
-            if(randX != x && randY != y && isMine[randX][randY] == true)
+            if(randX != x && randY != y && isMine[randX][randY] == false)
             {
                 tiles[randX][randY] = new Mine(this,randX,randY);
                 isMine[randX][randY] = true;
@@ -74,10 +90,14 @@ public class Board {
                 if(this.getTileAt(randX + 1, randY) != null)tiles[randX + 1][randY].addMinesAround();
                 if(this.getTileAt(randX, randY - 1) != null)tiles[randX][randY - 1].addMinesAround();
                 if(this.getTileAt(randX, randY + 1) != null)tiles[randX][randY + 1].addMinesAround();
+                if(this.getTileAt(randX - 1, randY - 1) != null)tiles[randX - 1][randY - 1].addMinesAround();
+                if(this.getTileAt(randX + 1, randY + 1) != null)tiles[randX + 1][randY + 1].addMinesAround();
+                if(this.getTileAt(randX - 1, randY + 1) != null)tiles[randX - 1][randY + 1].addMinesAround();
+                if(this.getTileAt(randX + 1, randY - 1) != null)tiles[randX + 1][randY - 1].addMinesAround();
             }
             else i--;
         }
-
+        //System.out.println("Debug pos 2");
         this.print();
     }
 
@@ -94,8 +114,9 @@ public class Board {
     {
         try {
             return tiles[x][y];
-        }catch (NullPointerException e)
+        }catch (Exception e)
         {
+            //System.out.println("Error: invalid location");
             return null;
         }
     }

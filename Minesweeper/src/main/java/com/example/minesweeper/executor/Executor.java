@@ -1,9 +1,8 @@
-package java.executor;
+package com.example.minesweeper.executor;
 
-import javafx.fxml.Initializable;
-
-import java.board.Board;
-import java.controller.Controller;
+import com.example.minesweeper.board.Board;
+import com.example.minesweeper.controller.Controller;
+import com.example.minesweeper.enums.TileStatus;
 
 
 public class Executor{
@@ -37,7 +36,15 @@ public class Executor{
         this.controller = controller;
     }
 
+    public void startNewGame(String difficulty,int x,int y)
+    {
+        System.out.println("Start new game");
+        board.createBoard(difficulty,x,y);
+    }
 
-
+    public void setTileAt(int x, int y, TileStatus status, int num)
+    {
+        controller.setTileAt(x,y,status,num);
+    }
 
 }

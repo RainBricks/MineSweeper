@@ -1,7 +1,7 @@
-package java.tile;
+package com.example.minesweeper.tile;
 
-import java.board.Board;
-import java.enums.TileStatus;
+import com.example.minesweeper.board.Board;
+import com.example.minesweeper.enums.TileStatus;
 
 public class Tile {
 
@@ -26,24 +26,34 @@ public class Tile {
             status = TileStatus.opened;
         }
         if(minesAround != 0)return true;
+        System.out.println("Tile at " + this.x + " , " + this.y + "is clicked");
         if(board.getTileAt(x - 1,y) != null)board.getTileAt(x - 1,y).trigger();
         if(board.getTileAt(x + 1,y) != null)board.getTileAt(x + 1,y).trigger();
         if(board.getTileAt(x,y - 1) != null)board.getTileAt(x,y - 1).trigger();
         if(board.getTileAt(x,y + 1) != null)board.getTileAt(x,y + 1).trigger();
+        if(board.getTileAt(x - 1,y - 1) != null)board.getTileAt(x - 1,y - 1).trigger();
+        if(board.getTileAt(x + 1,y + 1) != null)board.getTileAt(x + 1,y + 1).trigger();
+        if(board.getTileAt(x - 1,y - 1) != null)board.getTileAt(x - 1,y - 1).trigger();
+        if(board.getTileAt(x + 1,y + 1) != null)board.getTileAt(x + 1,y + 1).trigger();
         return true;
     }
 
     public void trigger()
     {
-        if(status == TileStatus.closed)
-        {
-            status = TileStatus.opened;
-        }
-        if(minesAround != 0)return;//if this a numbered java.tile then stop recursion
+        if(status != TileStatus.closed)return;
+        status = TileStatus.opened;
+        board.setTileAt(this.x,this.y,this.status,this.minesAround);
+        if(minesAround != 0)return;//if this a numbered tile then stop recursion
+        System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
         if(board.getTileAt(x - 1,y) != null)board.getTileAt(x - 1,y).trigger();
         if(board.getTileAt(x + 1,y) != null)board.getTileAt(x + 1,y).trigger();
         if(board.getTileAt(x,y - 1) != null)board.getTileAt(x,y - 1).trigger();
         if(board.getTileAt(x,y + 1) != null)board.getTileAt(x,y + 1).trigger();
+        if(board.getTileAt(x - 1,y - 1) != null)board.getTileAt(x - 1,y - 1).trigger();
+        if(board.getTileAt(x + 1,y + 1) != null)board.getTileAt(x + 1,y + 1).trigger();
+        if(board.getTileAt(x + 1,y - 1) != null)board.getTileAt(x + 1,y - 1).trigger();
+        if(board.getTileAt(x - 1,y + 1) != null)board.getTileAt(x - 1,y + 1).trigger();
+
 
     }
 

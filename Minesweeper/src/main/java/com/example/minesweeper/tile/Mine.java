@@ -1,7 +1,7 @@
-package java.tile;
+package com.example.minesweeper.tile;
 
-import java.board.Board;
-import java.enums.TileStatus;
+import com.example.minesweeper.board.Board;
+import com.example.minesweeper.enums.TileStatus;
 
 public class Mine extends Tile{
     public Mine(Board board, int x, int y) {
