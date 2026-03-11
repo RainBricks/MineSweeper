@@ -1,7 +1,7 @@
-package tile;
+package java.tile;
 
-import board.Board;
-import enums.TileStatus;
+import java.board.Board;
+import java.enums.TileStatus;
 
 public class Tile {
 
@@ -39,7 +39,7 @@ public class Tile {
         {
             status = TileStatus.opened;
         }
-        if(minesAround != 0)return;//if this a numbered tile then stop recursion
+        if(minesAround != 0)return;//if this a numbered java.tile then stop recursion
         if(board.getTileAt(x - 1,y) != null)board.getTileAt(x - 1,y).trigger();
         if(board.getTileAt(x + 1,y) != null)board.getTileAt(x + 1,y).trigger();
         if(board.getTileAt(x,y - 1) != null)board.getTileAt(x,y - 1).trigger();

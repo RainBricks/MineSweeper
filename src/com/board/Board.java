@@ -1,8 +1,7 @@
-package board;
+package java.board;
 
-import javafx.util.Pair;
-import tile.Mine;
-import tile.Tile;
+import java.tile.Mine;
+import java.tile.Tile;
 
 
 import java.util.Random;
@@ -15,7 +14,15 @@ public class Board {
     private int mineNum;
     private boolean shielded;
 
-    public Board(String difficulty,int x,int y) {
+    private Board()
+    {
+        row = 0;
+        column = 0;
+        mineNum = 0;
+        shielded = false;
+    }
+
+    public void createBoard(String difficulty,int x,int y) {
         shielded = false;
         switch(difficulty){
             case "Easy":
@@ -93,5 +100,21 @@ public class Board {
         }
     }
 
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    private static class BoardHolder{
+        private static final Board board = new Board();
+    }
+
+    public static Board getBoard()
+    {
+        return BoardHolder.board;
+    }
 
 }

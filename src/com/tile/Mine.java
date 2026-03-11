@@ -1,7 +1,7 @@
-package tile;
+package java.tile;
 
-import board.Board;
-import enums.TileStatus;
+import java.board.Board;
+import java.enums.TileStatus;
 
 public class Mine extends Tile{
     public Mine(Board board, int x, int y) {
