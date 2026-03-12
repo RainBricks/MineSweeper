@@ -1,11 +1,11 @@
 package com.example.minesweeper.controller;
 
+import com.example.minesweeper.board.Board;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import com.example.minesweeper.enums.TileStatus;
-import com.example.minesweeper.executor.Executor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -21,7 +21,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-    private Executor executor;
+    private Board board;
 
     private boolean clicked;
 
@@ -42,8 +42,8 @@ public class Controller implements Initializable {
     {
     }
 
-    public void setExecutor(Executor executor) {
-        this.executor = executor;
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
 
@@ -123,6 +123,31 @@ public class Controller implements Initializable {
         }
     }
 
+
+    public void click(int x,int y)
+    {
+        if(!board.getTileAt(x,y).click())
+        {
+            this.gameOver();
+        }
+        else {
+            this.setTileAt(x,y,board.getTileAt(x,y).getStatus(),board.getTileAt(x,y).getMinesAround());
+        }
+    }
+
+    public void flag(int x,int y)
+    {
+        board.getTileAt(x,y).flag();
+        this.setTileAt(x,y,board.getTileAt(x,y).getStatus());
+    }
+
+
+    public void startNewGame(String difficulty,int x,int y)
+    {
+        System.out.println("Start new game");
+        board.createBoard(difficulty,x,y);
+    }
+
     public void tileClick(ActionEvent event)//Handle click and flag event !!flag event handling to be done
     {
         Button btn = (Button) event.getSource();
@@ -130,10 +155,10 @@ public class Controller implements Initializable {
         System.out.println("Click at " + pos[0] +" , " + pos[1]);
         if(!clicked)
         {
-            executor.startNewGame(difficulty.getValue(),pos[0],pos[1]);
+            this.startNewGame(difficulty.getValue(),pos[0],pos[1]);
             clicked = true;
         }
-        executor.click(pos[0],pos[1]);
+        this.click(pos[0],pos[1]);
     }
 
 }

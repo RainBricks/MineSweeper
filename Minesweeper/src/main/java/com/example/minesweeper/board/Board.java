@@ -1,11 +1,12 @@
 package com.example.minesweeper.board;
 
+import com.example.minesweeper.controller.Controller;
 import com.example.minesweeper.enums.TileStatus;
-import com.example.minesweeper.executor.Executor;
 import com.example.minesweeper.tile.Mine;
 import com.example.minesweeper.tile.Tile;
 
 
+import java.util.Collection;
 import java.util.Random;
 
 public class Board {
@@ -16,7 +17,7 @@ public class Board {
     private int mineNum;
     private boolean shielded;
 
-    private Executor executor;
+    private Controller controller;
 
     private Board()
     {
@@ -26,14 +27,14 @@ public class Board {
         shielded = false;
     }
 
-    public void setExecutor(Executor executor)
+    public void setController(Controller controller)
     {
-        this.executor = executor;
+        this.controller = controller;
     }
 
     public void setTileAt(int x, int y, TileStatus status, int num)
     {
-        executor.setTileAt(x,y,status,num);
+        controller.setTileAt(x,y,status,num);
     }
 
 

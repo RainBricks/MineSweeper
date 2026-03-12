@@ -2,7 +2,6 @@ package com.example.minesweeper;
 
 import com.example.minesweeper.board.Board;
 import com.example.minesweeper.controller.Controller;
-import com.example.minesweeper.executor.Executor;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +13,6 @@ import java.io.IOException;
 public class App extends Application {
 
     private Controller controller;
-    private Executor executor;
     private Board board;
 
     public static void main(String[] args) {
@@ -33,15 +31,11 @@ public class App extends Application {
 
         board = Board.getBoard();
 
-        executor = new Executor(board);
-
-        board.setExecutor(executor);
-
         controller = loader.getController();
 
-        executor.setController(controller);
+        board.setController(controller);
 
-        controller.setExecutor(executor);
+        controller.setBoard(board);
 
         Scene scene = new Scene(root);
 
