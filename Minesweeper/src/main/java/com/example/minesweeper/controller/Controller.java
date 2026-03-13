@@ -9,6 +9,8 @@ import com.example.minesweeper.enums.TileStatus;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -47,22 +49,26 @@ public class Controller implements Initializable {
     }
 
 
-    public void setTileAt(int x, int y, TileStatus status, int num)
+    public void setTileAt(int x, int y, TileStatus status, int num)//handle click and trigger event
     {
         if(status == TileStatus.flagged)return;
         Button but = new Button();
         if(num != 0) but.setText(String.valueOf(num));
         else but.setText("O");
-        but.setOnAction(this::tileClick);
+        but.setOnMouseClicked(this::tileClick);
+        but.setUserData(new int[]{x,y});
         gameGridPane.add(but,y,x);
-
     }
 
-    public void setTileAt(int x, int y, TileStatus status)
+    public void setTileAt(int x, int y, TileStatus status)//handle flag event
     {
-        if(status == TileStatus.flagged)return;
-        Button but = new Button("o");
-        but.setOnAction(this::tileClick);
+        if(status == TileStatus.opened)return;
+        Button but = new Button();
+        but.setOnMouseClicked(this::tileClick);
+        but.setUserData(new int[]{x,y});
+        if(status == TileStatus.flagged) {
+            but.setText("F");
+        }
         gameGridPane.add(but,y,x);
     }
 
@@ -117,7 +123,7 @@ public class Controller implements Initializable {
             {
                 Button btn = new Button(" ");
                 btn.setUserData(new int[]{i,j});
-                btn.setOnAction(this::tileClick);
+                btn.setOnMouseClicked(this::tileClick);
                 gameGridPane.add(btn,j,i);
             }
         }
@@ -148,17 +154,30 @@ public class Controller implements Initializable {
         board.createBoard(difficulty,x,y);
     }
 
-    public void tileClick(ActionEvent event)//Handle click and flag event !!flag event handling to be done
+    public void tileClick(MouseEvent event)//Handle click and flag event !!flag event handling to be done
     {
         Button btn = (Button) event.getSource();
         int[] pos = (int[]) btn.getUserData();
-        System.out.println("Click at " + pos[0] +" , " + pos[1]);
-        if(!clicked)
+
+        if(event.getButton() == MouseButton.PRIMARY)
         {
-            this.startNewGame(difficulty.getValue(),pos[0],pos[1]);
-            clicked = true;
+            System.out.println("Click at " + pos[0] +" , " + pos[1]);
+            if(!clicked)
+            {
+                this.startNewGame(difficulty.getValue(),pos[0],pos[1]);
+                clicked = true;
+            }
+            this.click(pos[0],pos[1]); //left_click
         }
-        this.click(pos[0],pos[1]);
+        else if(event.getButton() == MouseButton.SECONDARY)
+        {
+            if(!clicked)
+            {
+                return;
+            }
+            System.out.println("Flag at " + pos[0] +" , " + pos[1]);
+            this.flag(pos[0],pos[1]);
+        }
     }
 
 }

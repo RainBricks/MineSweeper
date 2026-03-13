@@ -10,6 +10,11 @@ public class Mine extends Tile{
 
     @Override
     public boolean click() {
+        if(status == TileStatus.flagged)
+        {
+            System.out.println("This tile is flagged!");
+            return true;
+        }
         if(status == TileStatus.closed)
         {
             status = TileStatus.opened;

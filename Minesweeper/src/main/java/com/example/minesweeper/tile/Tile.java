@@ -21,6 +21,11 @@ public class Tile {
 
     public boolean click()
     {
+        if(status == TileStatus.flagged)
+        {
+            System.out.println("This tile is flagged!");
+            return true;
+        }
         if(status == TileStatus.closed)
         {
             status = TileStatus.opened;
@@ -61,7 +66,11 @@ public class Tile {
     {
         if(status != TileStatus.opened)
         {
-            if(status == TileStatus.closed) status = TileStatus.flagged;
+            if(status == TileStatus.closed){
+                status = TileStatus.flagged;
+                board.setTileAt(this.x,this.y,this.status,this.minesAround);
+                System.out.println("Tile at " + this.x + " , " + this.y + "is flagged");
+            }
             else if(status == TileStatus.flagged) status = TileStatus.closed;
         }
     }
