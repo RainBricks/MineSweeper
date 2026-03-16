@@ -1,35 +1,36 @@
 package com.example.minesweeper.controller;
 
 import com.example.minesweeper.board.Board;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-
-import com.example.minesweeper.enums.TileStatus;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.AnchorPane;
+
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-    private Board board;
+    private final Board board;
 
     private boolean clicked;
 
+    private int row;
+    private int column;
+    private int mineNum;
+
+    /*
     @FXML
     private AnchorPane topSection;
 
     @FXML
     private AnchorPane bottomSection;
+    */
+
 
     @FXML
     private GridPane gameGridPane;
@@ -40,35 +41,17 @@ public class Controller implements Initializable {
 
     public Controller()
     {
+        this.board = Board.getBoard();
+        this.row = 8;
+        this.column = 8;
+        this.mineNum = 10;
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
-
-    public void setTileAt(int x, int y, TileStatus status, int num)
-    {
-        if(status == TileStatus.flagged)return;
-        Button but = new Button();
-        if(num != 0) but.setText(String.valueOf(num));
-        else but.setText("O");
-        but.setOnAction(this::tileClick);
-        gameGridPane.add(but,y,x);
-
-    }
-
-    public void setTileAt(int x, int y, TileStatus status)
-    {
-        if(status == TileStatus.flagged)return;
-        Button but = new Button("o");
-        but.setOnAction(this::tileClick);
-        gameGridPane.add(but,y,x);
-    }
 
     public void gameOver()
     {
         gameGridPane.getChildren().clear();
+        gameGridPane.add(new Label("Game Over!"), 0, 0);
     }
 
 
@@ -76,49 +59,60 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources)
     {
 
-        initTiles("Easy");
+        initTiles();
 
 
         difficulty.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
+                (_, oldValue, newValue) -> {
                     if(oldValue.equals(newValue))return;
                     System.out.println("Change Difficulty: " + oldValue + " -> " + newValue);
-                    initTiles(newValue);
+                    switch(newValue)
+                        {
+                        case "Easy":
+                            this.row = 8;
+                            this.column = 8;
+                            this.mineNum = 10;
+                            initTiles();
+                            break;
+                        case "Medium":
+                            this.row = 16;
+                            this.column = 16;
+                            this.mineNum = 40;
+                            initTiles();
+                            break;
+                        case "Hard":
+                            this.row = 16;
+                            this.column = 30;
+                            this.mineNum = 99;
+                            initTiles();
+                            break;
+                        }
                 }
         );
     }
 
-    public void initTiles(String difficulty)//Refresh the game plane
+    public void initTiles()//Refresh the game plane
     {
-        int row,column;
-        column = switch (difficulty) {
-            case "Easy" -> {
-                row = 8;
-                yield 8;
-            }
-            case "Medium" -> {
-                row = 16;
-                yield 16;
-            }
-            case "Hard" -> {
-                row = 16;
-                yield 30;
-            }
-            default -> {
-                row = 8;
-                yield 8;
-            }
-        };
-        gameGridPane.getChildren().clear();
+        //clear existing  game status
         clicked = false;
+
+        //create a new board
+        board.createBoard(row,column,mineNum);
+
+        //display game plane
+        this.displayGamePlane();
+    }
+
+    public void displayGamePlane()
+    {
+        gameGridPane.getChildren().clear();
         for(int i = 0;i < row;i++)
         {
             for(int j = 0;j < column;j++)
             {
-                Button btn = new Button(" ");
-                btn.setUserData(new int[]{i,j});
-                btn.setOnAction(this::tileClick);
-                gameGridPane.add(btn,j,i);
+
+                board.getTileAt(i,j).getTileView().setOnMouseClicked(this::tileClick);
+                gameGridPane.add(board.getTileAt(i,j).getTileView(),j,i);
             }
         }
     }
@@ -130,35 +124,44 @@ public class Controller implements Initializable {
         {
             this.gameOver();
         }
-        else {
-            this.setTileAt(x,y,board.getTileAt(x,y).getStatus(),board.getTileAt(x,y).getMinesAround());
-        }
     }
 
     public void flag(int x,int y)
     {
         board.getTileAt(x,y).flag();
-        this.setTileAt(x,y,board.getTileAt(x,y).getStatus());
     }
 
 
-    public void startNewGame(String difficulty,int x,int y)
-    {
-        System.out.println("Start new game");
-        board.createBoard(difficulty,x,y);
-    }
 
-    public void tileClick(ActionEvent event)//Handle click and flag event !!flag event handling to be done
+    public void tileClick(MouseEvent event)//Handle click and flag event !!flag event handling to be done
     {
+
         Button btn = (Button) event.getSource();
         int[] pos = (int[]) btn.getUserData();
-        System.out.println("Click at " + pos[0] +" , " + pos[1]);
-        if(!clicked)
+
+        if(event.getButton() == MouseButton.PRIMARY)
         {
-            this.startNewGame(difficulty.getValue(),pos[0],pos[1]);
-            clicked = true;
+            if(!clicked)
+            {
+                board.startGame(pos[0],pos[1]);
+                clicked = true;
+                this.displayGamePlane();
+            }
+            System.out.println("Left click event at " + pos[0] + " , " + pos[1]);
+            this.click(pos[0],pos[1]); //left_click
         }
-        this.click(pos[0],pos[1]);
+        else if(event.getButton() == MouseButton.SECONDARY)
+        {
+            if(!clicked)
+            {
+                return;
+            }
+            System.out.println("Right click event at " + pos[0] + " , " + pos[1]);
+            this.flag(pos[0],pos[1]);
+        }
+
+
+
     }
 
 }

@@ -1,18 +1,18 @@
 package com.example.minesweeper.tile;
 
-import com.example.minesweeper.board.Board;
 import com.example.minesweeper.enums.TileStatus;
 
 public class Mine extends Tile{
-    public Mine(Board board, int x, int y) {
-        super(board, x, y);
+    public Mine(int x, int y) {
+        super(x, y);
     }
 
     @Override
     public boolean click() {
         if(status == TileStatus.closed)
         {
-            status = TileStatus.opened;
+            status = TileStatus.exploded;
+            this.tileView.update(this.status);
         }
         return false;
     }

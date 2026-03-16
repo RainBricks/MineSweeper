@@ -1,12 +1,7 @@
 package com.example.minesweeper.board;
 
-import com.example.minesweeper.controller.Controller;
-import com.example.minesweeper.enums.TileStatus;
 import com.example.minesweeper.tile.Mine;
 import com.example.minesweeper.tile.Tile;
-
-
-import java.util.Collection;
 import java.util.Random;
 
 public class Board {
@@ -17,7 +12,6 @@ public class Board {
     private int mineNum;
     private boolean shielded;
 
-    private Controller controller;
 
     private Board()
     {
@@ -25,82 +19,61 @@ public class Board {
         column = 0;
         mineNum = 0;
         shielded = false;
+        createBoard(8,8,10);
     }
 
-    public void setController(Controller controller)
+    public void createBoard(int row,int column,int mineNum)
     {
-        this.controller = controller;
-    }
-
-    public void setTileAt(int x, int y, TileStatus status, int num)
-    {
-        controller.setTileAt(x,y,status,num);
-    }
-
-
-    public void createBoard(String difficulty,int x,int y) {
-        shielded = false;
-        switch(difficulty){
-            case "Easy":
-                this.row = 8;
-                this.column = 8;
-                this.mineNum = 10;
-                break;
-            case "Medium":
-                this.row = 16;
-                this.column = 16;
-                this.mineNum = 40;
-                break;
-            case "Hard":
-                this.row = 16;
-                this.column = 30;
-                this.mineNum = 99;
-                break;
-            default:
-                this.row = 8;
-                this.column = 8;
-                this.mineNum = 10;
-                break;
-        }
-
-        this.tiles = new Tile[row][column];
-
-        Random random = new Random();
-        int randX,randY;//random number
-
-        Boolean[][] isMine = new Boolean[row][column];//temporary store the position of mines for number counting
+        this.shielded = false;
+        this.row = row;
+        this.column = column;
+        this.mineNum = mineNum;
+        this.tiles = new Tile[this.row][this.column];
 
         //fill in empty tiles
         for(int i = 0; i < row; i++){
             for(int j = 0; j < column; j++){
-                tiles[i][j] = new Tile(this,i,j);
-                isMine[i][j] = false;
+                tiles[i][j] = new Tile(i,j);
             }
         }
+    }
+
+
+    public void startGame(int x,int y) {
+
+        Random random = new Random();
+        int randX,randY;//random number
+
+        boolean[][] isMine = new boolean[row][column];//temporary store the position of mines for number counting
+
         //System.out.println("Debug pos 1");
         //generate mines
         for(int i = 0;i < this.mineNum;i++)
         {
             randX = random.nextInt(this.row);
             randY = random.nextInt(this.column);
-            if(randX != x && randY != y && isMine[randX][randY] == false)
+            if(randX != x && randY != y && !isMine[randX][randY])
             {
-                tiles[randX][randY] = new Mine(this,randX,randY);
+                tiles[randX][randY] = new Mine(randX,randY);
                 isMine[randX][randY] = true;
-                if(this.getTileAt(randX - 1, randY) != null)tiles[randX - 1][randY].addMinesAround();
-                if(this.getTileAt(randX + 1, randY) != null)tiles[randX + 1][randY].addMinesAround();
-                if(this.getTileAt(randX, randY - 1) != null)tiles[randX][randY - 1].addMinesAround();
-                if(this.getTileAt(randX, randY + 1) != null)tiles[randX][randY + 1].addMinesAround();
-                if(this.getTileAt(randX - 1, randY - 1) != null)tiles[randX - 1][randY - 1].addMinesAround();
-                if(this.getTileAt(randX + 1, randY + 1) != null)tiles[randX + 1][randY + 1].addMinesAround();
-                if(this.getTileAt(randX - 1, randY + 1) != null)tiles[randX - 1][randY + 1].addMinesAround();
-                if(this.getTileAt(randX + 1, randY - 1) != null)tiles[randX + 1][randY - 1].addMinesAround();
+
+                for(int j = randX - 1;j <= randX + 1;j++)
+                {
+                    for(int k = randY - 1;k <= randY + 1;k++)
+                    {
+                        if(this.getTileAt(j, k) != null && !(j == randX && k == randY))tiles[j][k].addMinesAround();
+                    }
+                }
+
             }
             else i--;
         }
         //System.out.println("Debug pos 2");
         this.print();
     }
+
+
+
 
     public void print()
     {
@@ -115,20 +88,13 @@ public class Board {
     {
         try {
             return tiles[x][y];
-        }catch (Exception e)
+        }catch (ArrayIndexOutOfBoundsException e)
         {
             //System.out.println("Error: invalid location");
             return null;
         }
     }
 
-    public int getRow() {
-        return row;
-    }
-
-    public int getColumn() {
-        return column;
-    }
 
     private static class BoardHolder{
         private static final Board board = new Board();
