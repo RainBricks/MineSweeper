@@ -13,6 +13,8 @@ public class Board {
 
     private int score;
     private boolean shielded;
+    private boolean gotMinus;
+    private int minusVal;
 
     private Board()
     {
@@ -23,6 +25,9 @@ public class Board {
         score = 0;
         shielded = false;
 
+        gotMinus = false;
+        minusVal = 10;
+
         createBoard(8,8,10);
     }
 
@@ -30,6 +35,8 @@ public class Board {
     {
         this.score = 0;
         this.shielded = false;
+        gotMinus = false;
+        minusVal = 10;
 
         this.row = row;
         this.column = column;
@@ -156,7 +163,7 @@ public class Board {
         this.score++;
     }
     public void decScore(){
-        this.score-=10;
+        this.score-=minusVal;
     }
 
     public int getScore(){
@@ -175,8 +182,13 @@ public class Board {
         return this.shielded;
     }
 
+    public void makeGettingMinus(){
+        this.gotMinus = true;
+    }
+
     public boolean win(){
-        return this.score == row * column - mineNum;
+        if(!this.gotMinus) return this.score == row * column - mineNum;
+        else return this.score == row * column - mineNum - minusVal + 1;
     }
 
 }

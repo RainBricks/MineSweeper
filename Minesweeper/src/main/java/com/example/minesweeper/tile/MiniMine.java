@@ -12,6 +12,7 @@ public class MiniMine extends Tile{
 
         if(status != TileStatus.opened)
         {
+            this.board.makeGettingMinus();
             this.board.decScore();
             System.out.println("You got minus point!");
         }
@@ -38,5 +39,11 @@ public class MiniMine extends Tile{
                 if(board.getTileAt(i,j) != null && !(i == x && j== y))board.getTileAt(i,j).trigger();
             }
         }
+    }
+
+    @Override
+    public void endgameReveal(){
+        status = TileStatus.triggered;
+        tileView.update(status);
     }
 }

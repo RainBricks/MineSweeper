@@ -41,4 +41,10 @@ public class MineClearance extends Tile{
             }
         }
     }
+
+    @Override
+    public void endgameReveal(){
+        status = TileStatus.triggered;
+        tileView.update(status);
+    }
 }
