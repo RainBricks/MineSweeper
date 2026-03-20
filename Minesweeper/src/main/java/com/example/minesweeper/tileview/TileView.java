@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.InputStream;
 
 
 public class TileView extends Button {
@@ -31,13 +32,13 @@ public class TileView extends Button {
                         "-fx-border-insets: 0;"
         );
 
-        this.setImage(TileStatus.closed);
+        this.setImageWithStatus(TileStatus.closed);
     }
 
     public void update(int minesAround)
     {
 
-        this.setImage(minesAround);
+        this.setImageWithNumber(minesAround);
         System.out.println("TileView::update complete");
 
     }
@@ -45,13 +46,20 @@ public class TileView extends Button {
     public void update(TileStatus status)
     {
 
-        this.setImage(status);
+        this.setImageWithStatus(status);
 
     }
 
-    private void setImage(int minesAround)
+    private void setImageWithNumber(int minesAround)
     {
-        Image image = new Image(getClass().getResourceAsStream("/images/" +  minesAround + ".gif"));
+        InputStream input = this.getClass().getResourceAsStream("/images/" +  minesAround + ".gif");
+        if(input == null)
+        {
+            System.out.println("TileView::setImage failed: path is not found");
+            return ;
+        }
+
+        Image image = new Image(input);
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(CELL_SIZE);
         imageView.setFitHeight(CELL_SIZE);
@@ -61,9 +69,17 @@ public class TileView extends Button {
         super.setGraphic(imageView);
     }
 
-    private void setImage(TileStatus status)
+    private void setImageWithStatus(TileStatus status)
     {
-        Image image = new Image(getClass().getResourceAsStream("/images/" +  status + ".gif"));
+
+        InputStream input = this.getClass().getResourceAsStream("/images/" +  status + ".gif");
+        if(input == null)
+        {
+            System.out.println("TileView::setImage failed: path is not found");
+            return ;
+        }
+
+        Image image = new Image(input);
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(CELL_SIZE);
         imageView.setFitHeight(CELL_SIZE);
