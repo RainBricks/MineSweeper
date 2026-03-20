@@ -242,7 +242,7 @@ public class Controller implements Initializable {
             });
             initTiles();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Exception: " + e);
         }
     }
 
