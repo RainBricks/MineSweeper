@@ -25,7 +25,16 @@
                 </value>
             </ComboBox>
 
-            <Button fx:id="restartButton" text="Restart" onAction="#restart"/>
+            <Button fx:id="restartButton" style=
+                    "-fx-padding: 0;
+            -fx-background-color: transparent;
+            -fx-background-insets: 0;
+            -fx-background-radius: 0;
+            -fx-border-width: 0;
+            -fx-border-insets: 0"
+                    onAction="#restart">
+
+            </Button>
 
             <Label fx:id="scoreLabel" text="Score: 0"/>
 

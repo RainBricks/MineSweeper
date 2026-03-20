@@ -8,12 +8,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -27,6 +30,11 @@ public class Controller implements Initializable {
     private int mineNum;
 
     private boolean gameEnded;
+
+    private ImageView restartButtonNormalUnpressedImageView;
+    private ImageView restartButtonNormalPressedImageView;
+    private ImageView restartButtonWinImageView;
+    private ImageView restartButtonLoseImageView;
 
     /*
     @FXML
@@ -64,6 +72,44 @@ public class Controller implements Initializable {
         this.row = 8;
         this.column = 8;
         this.mineNum = 10;
+
+    }
+
+    public void initRestartButtonImageViews()
+    {
+        InputStream win = this.getClass().getResourceAsStream("/images/win.png");
+        InputStream lose = this.getClass().getResourceAsStream("/images/lose.png");
+        InputStream smile_unpressed = this.getClass().getResourceAsStream("/images/face_unpressed.png");
+        InputStream smile_pressed = this.getClass().getResourceAsStream("/images/face_pressed.png");
+        if(win == null || lose == null || smile_unpressed == null || smile_pressed == null)
+        {
+            System.out.println("Init::setImage failed: path is not found");
+            return ;
+        }
+
+        restartButtonNormalUnpressedImageView = new ImageView(new Image(smile_unpressed));
+        restartButtonNormalUnpressedImageView.setFitWidth(30);
+        restartButtonNormalUnpressedImageView.setFitHeight(30);
+        restartButtonNormalUnpressedImageView.setPreserveRatio(false);
+
+        restartButtonNormalPressedImageView = new ImageView(new Image(smile_pressed));
+        restartButtonNormalPressedImageView.setFitWidth(30);
+        restartButtonNormalPressedImageView.setFitHeight(30);
+        restartButtonNormalPressedImageView.setPreserveRatio(false);
+
+        restartButtonWinImageView = new ImageView(new Image(win));
+        restartButtonWinImageView.setFitWidth(30);
+        restartButtonWinImageView.setFitHeight(30);
+        restartButtonWinImageView.setPreserveRatio(false);
+
+        restartButtonLoseImageView = new ImageView(new Image(lose));
+        restartButtonLoseImageView.setFitWidth(30);
+        restartButtonLoseImageView.setFitHeight(30);
+        restartButtonLoseImageView.setPreserveRatio(false);
+
+        restartButton.setGraphic(restartButtonNormalUnpressedImageView);
+        restartButton.setOnMousePressed(event -> {restartButton.setGraphic(restartButtonNormalPressedImageView);});
+        restartButton.setOnMouseReleased(event -> {restartButton.setGraphic(restartButtonNormalUnpressedImageView);});
     }
 
     @Override
@@ -71,7 +117,7 @@ public class Controller implements Initializable {
     {
 
         initTiles();
-
+        initRestartButtonImageViews();
 
         difficulty.getSelectionModel().selectedItemProperty().addListener(
                 (_, oldValue, newValue) -> {
@@ -137,6 +183,7 @@ public class Controller implements Initializable {
         scoreLabel.setText("Score: 0");
         resultLabel.setText("Let's see ehhh");
 
+
         //display game plane
         this.displayGamePlane();
     }
@@ -167,7 +214,7 @@ public class Controller implements Initializable {
         }
 
         resultLabel.setText(result ? "You win" : "You lose");
-        restartButton.setDisable(false);
+        restartButton.setGraphic(result?restartButtonWinImageView:restartButtonLoseImageView);
 
     }
 
