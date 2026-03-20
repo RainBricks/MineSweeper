@@ -79,6 +79,7 @@ public class Board {
         randY = random.nextInt(this.column);
         if(randX != x && randY != y && !isMine[randX][randY])
         {
+
             tiles[randX][randY] = new MineClearance(randX,randY);
             specialTile[randX][randY] = 1;
         }

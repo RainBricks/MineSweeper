@@ -31,24 +31,24 @@ public class Tile {
             return true;
         }
 
-        if(status == TileStatus.closed)
+        if(status != TileStatus.opened)
         {
             status = TileStatus.opened;
             this.board.incScore();//increase the score
             tileView.update(this.minesAround);//update current view
             System.out.println("Tile at " + this.x + " , " + this.y + "is clicked");
-        }
 
-        if(minesAround != 0)return true;
 
-        for(int i = x - 1;i <= x + 1;i++)
-        {
-            for(int j = y - 1;j <= y + 1;j++)
+            if(minesAround != 0)return true;
+
+            for(int i = x - 1;i <= x + 1;i++)
             {
-                if(board.getTileAt(i,j) != null && !(i == x && j == y))board.getTileAt(i,j).trigger();
+                for(int j = y - 1;j <= y + 1;j++)
+                {
+                    if(board.getTileAt(i,j) != null && !(i == x && j == y))board.getTileAt(i,j).trigger();
+                }
             }
         }
-
 
         return true;
 
