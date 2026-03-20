@@ -12,6 +12,7 @@ public class MiniMine extends Tile{
 
         if(status != TileStatus.opened)
         {
+            this.board.makeGettingMinus();
             this.board.decScore();
             System.out.println("You got minus point!");
         }
@@ -25,7 +26,6 @@ public class MiniMine extends Tile{
         if(status != TileStatus.closed)return;//if not closed then stop recursion
 
         status = TileStatus.triggered;//open the tile
-        this.board.incScore();//increase the score
         tileView.update(this.status);//update status
         System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
 
@@ -38,5 +38,11 @@ public class MiniMine extends Tile{
                 if(board.getTileAt(i,j) != null && !(i == x && j== y))board.getTileAt(i,j).trigger();
             }
         }
+    }
+
+    @Override
+    public void endgameReveal(){
+        status = TileStatus.triggered;
+        tileView.update(status);
     }
 }

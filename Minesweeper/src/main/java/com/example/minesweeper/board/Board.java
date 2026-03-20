@@ -2,6 +2,7 @@ package com.example.minesweeper.board;
 
 import com.example.minesweeper.tile.*;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Board {
@@ -13,6 +14,11 @@ public class Board {
 
     private int score;
     private boolean shielded;
+    private boolean gotMinus;
+    private int minusVal;
+
+    private ArrayList<Integer> mineXList;
+    private ArrayList<Integer> mineYList;
 
     private Board()
     {
@@ -23,6 +29,12 @@ public class Board {
         score = 0;
         shielded = false;
 
+        gotMinus = false;
+        minusVal = 10;
+
+        mineXList = new ArrayList<Integer>();
+        mineYList = new ArrayList<Integer>();
+
         createBoard(8,8,10);
     }
 
@@ -30,11 +42,16 @@ public class Board {
     {
         this.score = 0;
         this.shielded = false;
+        gotMinus = false;
+        minusVal = 10;
 
         this.row = row;
         this.column = column;
         this.mineNum = mineNum;
         this.tiles = new Tile[this.row][this.column];
+
+        mineXList = new ArrayList<Integer>();
+        mineYList = new ArrayList<Integer>();
 
         //fill in empty tiles
         for(int i = 0; i < row; i++){
@@ -46,6 +63,8 @@ public class Board {
 
     public void startGame(int x,int y) {
 
+        mineXList = new ArrayList<Integer>();
+        mineYList = new ArrayList<Integer>();
         Random random = new Random();
         int randX,randY;//random number
 
@@ -61,6 +80,8 @@ public class Board {
             {
                 tiles[randX][randY] = new Mine(randX,randY);
                 isMine[randX][randY] = 1;
+                mineXList.add(randX);
+                mineYList.add(randY);
 
                 for(int j = randX - 1;j <= randX + 1;j++)
                 {
@@ -113,6 +134,13 @@ public class Board {
         {
             tiles[randX][randY] = new Radar(randX,randY);
             isMine[randX][randY] = 4;
+            for(int i = randX - 1; i <= randX + 1; i++){
+                for(int j = randY - 1; j <= randY + 1; j++){
+                    if( !(i == randX && j == randY) && this.getTileAt(i, j) != null){
+                        if(isMine[i][j] == 1) tiles[randX][randY].addMinesAround();
+                    }
+                }
+            }
         }
 
         //System.out.println("Debug pos 2");
@@ -156,7 +184,7 @@ public class Board {
         this.score++;
     }
     public void decScore(){
-        this.score-=10;
+        this.score-=minusVal;
     }
 
     public int getScore(){
@@ -175,8 +203,21 @@ public class Board {
         return this.shielded;
     }
 
+    public void makeGettingMinus(){
+        this.gotMinus = true;
+    }
+
+    public void makeFlagRandom(){
+        Random random = new Random();
+        int rand = random.nextInt(this.mineXList.size());
+        int randomMineX = mineXList.get(rand);
+        int randomMineY = mineYList.get(rand);
+        this.getTileAt(randomMineX, randomMineY).flag();
+    }
+
     public boolean win(){
-        return this.score == row * column - mineNum;
+        if(!this.gotMinus) return this.score == row * column - mineNum - 1;
+        else return this.score == row * column - mineNum - minusVal;
     }
 
 }
