@@ -26,6 +26,7 @@ import static com.example.minesweeper.consts.UIConsts.*;
 public class Controller implements Initializable {
     private final Board board;
 
+
     private boolean clicked;
 
     private int row;
@@ -56,11 +57,17 @@ public class Controller implements Initializable {
 
     @FXML private ImageView middleBoarder;
 
-
     @FXML private ImageView lowerBoarder;
 
+    @FXML private ImageView middleLeftBoarder;
+
+    @FXML private ImageView middleRightBoarder;
 
 
+
+/*---------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------*/
 
     public Controller()
     {
@@ -70,6 +77,62 @@ public class Controller implements Initializable {
         this.mineNum = 10;
 
     }
+
+/*---------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------*/
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources)
+    {
+
+        initTiles();
+        initRestartButtonImageViews();
+
+
+        difficulty.getSelectionModel().selectedItemProperty().addListener(
+                (_, oldValue, newValue) -> {
+                    if(oldValue.equals(newValue))return;
+                    System.out.println("Change Difficulty: " + oldValue + " -> " + newValue);
+
+                    if (newValue.equals("Custom")) {
+                        // show the custom inputs
+                        updateCustom();
+                        // do not start a new game until user presses "Start"
+                        return;
+                    }
+
+                    switch(newValue)
+                    {
+                        case "Easy":
+                            this.row = 8;
+                            this.column = 8;
+                            this.mineNum = 10;
+                            initTiles();
+                            break;
+                        case "Medium":
+                            this.row = 16;
+                            this.column = 16;
+                            this.mineNum = 40;
+                            initTiles();
+                            break;
+                        case "Hard":
+                            this.row = 16;
+                            this.column = 30;
+                            this.mineNum = 99;
+                            initTiles();
+                            break;
+
+                    }
+                }
+        );
+
+
+    }
+
+/*---------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------*/
 
     public void initRestartButtonImageViews()
     {
@@ -108,52 +171,11 @@ public class Controller implements Initializable {
         restartButton.setOnMouseReleased(event -> {restartButton.setGraphic(restartButtonNormalUnpressedImageView);});
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
 
-        initTiles();
-        initRestartButtonImageViews();
+/*---------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------*/
 
-        difficulty.getSelectionModel().selectedItemProperty().addListener(
-                (_, oldValue, newValue) -> {
-                    if(oldValue.equals(newValue))return;
-                    System.out.println("Change Difficulty: " + oldValue + " -> " + newValue);
-
-                    if (newValue.equals("Custom")) {
-                        // show the custom inputs
-                        updateCustom();
-                        // do not start a new game until user presses "Start"
-                        return;
-                    }
-
-                    switch(newValue)
-                        {
-                        case "Easy":
-                            this.row = 8;
-                            this.column = 8;
-                            this.mineNum = 10;
-                            initTiles();
-                            break;
-                        case "Medium":
-                            this.row = 16;
-                            this.column = 16;
-                            this.mineNum = 40;
-                            initTiles();
-                            break;
-                        case "Hard":
-                            this.row = 16;
-                            this.column = 30;
-                            this.mineNum = 99;
-                            initTiles();
-                            break;
-
-                        }
-                }
-        );
-
-
-    }
 
     //for custom mode
     private void updateCustom() {
@@ -205,7 +227,7 @@ public class Controller implements Initializable {
 
             dialog.showAndWait().ifPresent(result -> {
 
-                //if the result of the dialog is confirm
+                //if the result of the dialog is confirmed
                 if (result == confirmButtonType) {
                     try {
                         this.row = controller.getRows();
@@ -224,22 +246,6 @@ public class Controller implements Initializable {
 
     public void initTiles()//Refresh the game plane
     {
-        try {
-
-            //set the size of the window
-            Stage stage = (Stage) root.getScene().getWindow();
-            System.out.println(stage.getWidth());
-            stage.setHeight(SETTINGS_BAR_HEIGHT + TILE_SIZE * this.row  + BOARDER_HEIGHT * 3 + STAGE_GAP_VERT);
-            stage.setWidth(TILE_SIZE * this.column  + BOARDER_WIDTH * 2 + STAGE_GAP_HOR);
-
-            //set the sizes of the borders
-            upperBoarder.setFitWidth(TILE_SIZE * this.column );
-            middleBoarder.setFitWidth(TILE_SIZE * this.column );
-            lowerBoarder.setFitWidth(TILE_SIZE * this.column );
-        }catch (NullPointerException e){
-            //should only be executed when app starts
-        }
-
 
         //clear existing  game status
         clicked = false;
@@ -252,6 +258,26 @@ public class Controller implements Initializable {
 
         //display game plane
         this.displayGamePlane();
+
+        try {
+
+            //set the size of the window
+            Stage stage = (Stage) root.getScene().getWindow();
+            //System.out.println(stage.getWidth());
+            root.setPrefHeight(SETTINGS_BAR_HEIGHT + TILE_SIZE * this.row  + BOARDER_HEIGHT * 3 );
+            root.setPrefWidth(TILE_SIZE * this.column  + BOARDER_WIDTH * 2 );
+
+            upperBoarder.setFitWidth( (TILE_SIZE + 0.5)  * this.column );//This is because there are gaps between the buttons, and the gap size between two buttons is between 0-1, here I picked 0.4
+            middleBoarder.setFitWidth((TILE_SIZE + 0.5)  * this.column );
+            lowerBoarder.setFitWidth((TILE_SIZE + 0.5)  * this.column );
+
+            middleLeftBoarder.setFitHeight((TILE_SIZE + 0.5) * this.row );//different coefficient for width and height
+            middleRightBoarder.setFitHeight((TILE_SIZE + 0.5) * this.row );
+
+            stage.sizeToScene();
+        }catch (NullPointerException e){
+            //should only be executed when app starts
+        }
     }
 
     public void displayGamePlane()
@@ -269,8 +295,7 @@ public class Controller implements Initializable {
 
     public void gameOver(boolean result)
     {
-        /*gameGridPane.getChildren().clear();
-        gameGridPane.add(new Label("Game Over!"), 0, 0);*/
+
         gameEnded = true;
 
         for (int i = 0; i < row; i++) {
@@ -285,6 +310,7 @@ public class Controller implements Initializable {
 
     @FXML
     private void restart(ActionEvent event) {
+        restartButton.setGraphic(restartButtonNormalUnpressedImageView);
         initTiles();
     }
 

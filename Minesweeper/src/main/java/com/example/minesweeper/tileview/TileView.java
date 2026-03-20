@@ -54,7 +54,7 @@ public class TileView extends Button {
 
     private void setImageWithNumber(int minesAround)
     {
-        InputStream input = this.getClass().getResourceAsStream("/images/" +  minesAround + ".gif");
+        InputStream input = this.getClass().getResourceAsStream("/images/" +  minesAround + ".png");
         if(input == null)
         {
             System.out.println("TileView::setImage failed: path is not found");
@@ -74,7 +74,7 @@ public class TileView extends Button {
     private void setImageWithStatus(TileStatus status)
     {
 
-        InputStream input = this.getClass().getResourceAsStream("/images/" +  status + ".gif");
+        InputStream input = this.getClass().getResourceAsStream("/images/" +  status + ".png");
         if(input == null)
         {
             System.out.println("TileView::setImage failed: path is not found");
