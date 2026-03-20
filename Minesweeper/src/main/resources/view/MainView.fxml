@@ -8,6 +8,23 @@
 <VBox  fx:id="root" prefHeight="348" prefWidth="300" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.minesweeper.controller.Controller">
 
     <AnchorPane prefHeight="50">
+
+
+        <StackPane AnchorPane.leftAnchor="0"
+                   AnchorPane.rightAnchor="0"
+                   AnchorPane.topAnchor="0"
+                   AnchorPane.bottomAnchor="0">
+            <Button fx:id="restartButton" onAction="#restart"
+                    style="-fx-padding: 0;
+                       -fx-background-color: transparent;
+                       -fx-background-insets: 0;
+                       -fx-background-radius: 0;
+                       -fx-border-width: 0;
+                       -fx-border-insets: 0;
+                       -fx-alignment: center;
+                       -fx-content-display: center;">
+            </Button>
+        </StackPane>
         <HBox alignment="CENTER_LEFT"
               AnchorPane.leftAnchor="10"
               AnchorPane.topAnchor="0"
@@ -38,22 +55,7 @@
             <Label fx:id="scoreLabel" text="Score: 0" />
         </HBox>
 
-        <StackPane AnchorPane.leftAnchor="0"
-                   AnchorPane.rightAnchor="0"
-                   AnchorPane.topAnchor="0"
-                   AnchorPane.bottomAnchor="0"
-                   mouseTransparent="true">
-            <Button fx:id="restartButton" onAction="#restart"
-                    style="-fx-padding: 0;
-                       -fx-background-color: transparent;
-                       -fx-background-insets: 0;
-                       -fx-background-radius: 0;
-                       -fx-border-width: 0;
-                       -fx-border-insets: 0;
-                       -fx-alignment: center;
-                       -fx-content-display: center;">
-            </Button>
-        </StackPane>
+
     </AnchorPane>
 
         <HBox fx:id="customPane" alignment="CENTER" managed="false" spacing="10" visible="false">
