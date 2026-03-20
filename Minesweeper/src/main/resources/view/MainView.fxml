@@ -5,36 +5,56 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox  fx:id="root" prefHeight="350" prefWidth="280" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.minesweeper.controller.Controller">
+<VBox  fx:id="root" prefHeight="348" prefWidth="300" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.minesweeper.controller.Controller">
 
-        <HBox alignment="CENTER" prefHeight="50">
-            <HBox HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
-                <ComboBox fx:id="difficulty" >
+    <AnchorPane prefHeight="50">
+        <HBox alignment="CENTER_LEFT"
+              AnchorPane.leftAnchor="10"
+              AnchorPane.topAnchor="0"
+              AnchorPane.bottomAnchor="0"
+              spacing="5">
+            <ComboBox fx:id="difficulty" >
 
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Easy" />
-                            <String fx:value="Medium" />
-                            <String fx:value="Hard" />
-                            <String fx:value="Custom" />
-                        </FXCollections>
-                    </items>
-
-                    <value>
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
                         <String fx:value="Easy" />
-                    </value>
-                </ComboBox>
-            </HBox>
-            <HBox HBox.hgrow="ALWAYS" alignment="CENTER">
-                    <Button fx:id="restartButton" onAction="#restart" style="-fx-padding: 0;                          -fx-background-color: transparent;                          -fx-background-insets: 0;                          -fx-background-radius: 0;                          -fx-border-width: 0;                          -fx-border-insets: 0">
+                        <String fx:value="Medium" />
+                        <String fx:value="Hard" />
+                        <String fx:value="Custom" />
+                    </FXCollections>
+                </items>
 
-                    </Button>
-            </HBox>
-            <HBox HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
-                    <Label fx:id="scoreLabel" text="Score: 0" />
-            </HBox>
+                <value>
+                    <String fx:value="Easy" />
+                </value>
+            </ComboBox>
         </HBox>
 
+        <HBox alignment="CENTER_RIGHT"
+              AnchorPane.rightAnchor="10"
+              AnchorPane.topAnchor="0"
+              AnchorPane.bottomAnchor="0"
+              spacing="5">
+            <Label fx:id="scoreLabel" text="Score: 0" />
+        </HBox>
+
+        <StackPane AnchorPane.leftAnchor="0"
+                   AnchorPane.rightAnchor="0"
+                   AnchorPane.topAnchor="0"
+                   AnchorPane.bottomAnchor="0"
+                   mouseTransparent="true">
+            <Button fx:id="restartButton" onAction="#restart"
+                    style="-fx-padding: 0;
+                       -fx-background-color: transparent;
+                       -fx-background-insets: 0;
+                       -fx-background-radius: 0;
+                       -fx-border-width: 0;
+                       -fx-border-insets: 0;
+                       -fx-alignment: center;
+                       -fx-content-display: center;">
+            </Button>
+        </StackPane>
+    </AnchorPane>
 
         <HBox fx:id="customPane" alignment="CENTER" managed="false" spacing="10" visible="false">
             <Label text="Height:" />
