@@ -6,4 +6,37 @@ public class MiniMine extends Tile{
     public MiniMine(int x, int y) {
         super(x, y);
     }
+
+    @Override
+    public boolean click() {
+
+        if(status != TileStatus.opened)
+        {
+            this.board.decScore();
+            System.out.println("You got minus point!");
+        }
+
+        return super.click();
+    }
+
+    @Override
+    public void trigger()
+    {
+        if(status != TileStatus.closed)return;//if not closed then stop recursion
+
+        status = TileStatus.triggered;//open the tile
+        this.board.incScore();//increase the score
+        tileView.update(this.status);//update status
+        System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
+
+        if(this.minesAround != 0)return;//if this a numbered tile then stop recursion
+
+        for(int i = x - 1; i <= x + 1;i++)
+        {
+            for(int j = y - 1;j <= y + 1;j++)
+            {
+                if(board.getTileAt(i,j) != null && !(i == x && j== y))board.getTileAt(i,j).trigger();
+            }
+        }
+    }
 }
