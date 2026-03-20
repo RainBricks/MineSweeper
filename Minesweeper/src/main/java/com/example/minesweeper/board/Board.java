@@ -134,6 +134,13 @@ public class Board {
         {
             tiles[randX][randY] = new Radar(randX,randY);
             isMine[randX][randY] = 4;
+            for(int i = randX - 1; i <= randX + 1; i++){
+                for(int j = randY - 1; j <= randY + 1; j++){
+                    if( !(i == randX && j == randY) && this.getTileAt(i, j) != null){
+                        if(isMine[i][j] == 1) tiles[randX][randY].addMinesAround();
+                    }
+                }
+            }
         }
 
         //System.out.println("Debug pos 2");
@@ -209,8 +216,8 @@ public class Board {
     }
 
     public boolean win(){
-        if(!this.gotMinus) return this.score == row * column - mineNum;
-        else return this.score == row * column - mineNum - minusVal + 1;
+        if(!this.gotMinus) return this.score == row * column - mineNum - 1;
+        else return this.score == row * column - mineNum - minusVal;
     }
 
 }

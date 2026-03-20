@@ -24,7 +24,6 @@ public class Radar extends Tile{
         if(status != TileStatus.closed)return;//if not closed then stop recursion
 
         status = TileStatus.triggered;//open the tile
-        this.board.incScore();//increase the score
         tileView.update(this.status);//update status
         System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
 
