@@ -6,7 +6,7 @@ import com.example.minesweeper.tileview.TileView;
 
 public class Tile {
 
-    private int minesAround;
+    protected int minesAround;
     protected Board board;
     protected int x;
     protected int y;

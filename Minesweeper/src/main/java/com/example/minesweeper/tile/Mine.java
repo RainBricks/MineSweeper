@@ -10,6 +10,12 @@ public class Mine extends Tile{
     @Override
     public boolean click() {
 
+        if(this.board.isShielded()){
+            this.board.useShield();
+            this.status = TileStatus.flagged;
+            return true;
+        }
+
         if(status == TileStatus.flagged)
         {
             System.out.println("This tile is flagged!");
