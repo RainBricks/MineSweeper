@@ -136,7 +136,6 @@ public class Controller implements Initializable {
 
         scoreLabel.setText("Score: 0");
         resultLabel.setText("Let's see ehhh");
-        restartButton.setDisable(true);
 
         //display game plane
         this.displayGamePlane();
@@ -174,7 +173,6 @@ public class Controller implements Initializable {
 
     @FXML
     private void restart(ActionEvent event) {
-        if (!gameEnded) return;
         initTiles();
     }
 

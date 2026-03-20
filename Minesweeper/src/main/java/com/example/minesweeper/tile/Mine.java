@@ -38,7 +38,7 @@ public class Mine extends Tile{
     @Override
     public void endgameReveal(){
         if(status != TileStatus.exploded){
-            status = TileStatus.triggered;
+            status = TileStatus.minetriggered;
             tileView.update(status);
         }
     }

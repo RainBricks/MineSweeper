@@ -7,7 +7,7 @@
 
 <VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.minesweeper.controller.Controller">
 
-        <HBox alignment="CENTER" spacing="10">
+        <HBox alignment="CENTER" spacing="200">
 
             <ComboBox fx:id="difficulty" prefWidth="100">
 
@@ -24,6 +24,11 @@
                     <String fx:value="Easy" />
                 </value>
             </ComboBox>
+
+            <Button fx:id="restartButton" text="Restart" onAction="#restart"/>
+
+            <Label fx:id="scoreLabel" text="Score: 0"/>
+
         </HBox>
 
 
@@ -36,21 +41,13 @@
             <Label text="Mines:"/>
             <TextField fx:id="customMineNum" text="30" prefWidth="70"/>
             <Button fx:id="updateCustomButton" text="Update" onAction="#updateCustom"/>
-
         </HBox>
 
-
-        <Label fx:id="scoreLabel" text="Score: 0"/>
         <Label fx:id="resultLabel" text="Win/Lose"/>
 
         <GridPane fx:id="gameGridPane" style="-fx-background-color: #e0e0e0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
         </GridPane>
-
-
-        <HBox alignment="CENTER_LEFT" spacing="10">
-            <Button fx:id="restartButton" text="Restart" onAction="#restart"/>
-        </HBox>
 
 
 </VBox>
