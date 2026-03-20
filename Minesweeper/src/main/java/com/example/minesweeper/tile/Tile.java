@@ -6,7 +6,6 @@ import com.example.minesweeper.tileview.TileView;
 
 public class Tile {
 
-
     private int minesAround;
     protected Board board;
     protected int x;
@@ -35,6 +34,7 @@ public class Tile {
         if(status == TileStatus.closed)
         {
             status = TileStatus.opened;
+            this.board.incScore();//increase the score
             tileView.update(this.minesAround);//update current view
             System.out.println("Tile at " + this.x + " , " + this.y + "is clicked");
         }
@@ -60,6 +60,7 @@ public class Tile {
         if(status != TileStatus.closed)return;//if not closed then stop recursion
 
         status = TileStatus.opened;//open the tile
+        this.board.incScore();//increase the score
         tileView.update(this.minesAround);//update status
         System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
 
@@ -89,6 +90,10 @@ public class Tile {
         tileView.update(status);
 
 
+
+    }
+
+    public void endgameReveal(){
 
     }
 

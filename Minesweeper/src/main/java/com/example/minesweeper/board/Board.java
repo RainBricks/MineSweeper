@@ -10,21 +10,27 @@ public class Board {
     private int row;
     private int column;
     private int mineNum;
-    private boolean shielded;
 
+    private int score;
+    private boolean shielded;
 
     private Board()
     {
         row = 0;
         column = 0;
         mineNum = 0;
+
+        score = 0;
         shielded = false;
+
         createBoard(8,8,10);
     }
 
     public void createBoard(int row,int column,int mineNum)
     {
+        this.score = 0;
         this.shielded = false;
+
         this.row = row;
         this.column = column;
         this.mineNum = mineNum;
@@ -37,7 +43,6 @@ public class Board {
             }
         }
     }
-
 
     public void startGame(int x,int y) {
 
@@ -103,6 +108,18 @@ public class Board {
     public static Board getBoard()
     {
         return BoardHolder.board;
+    }
+
+    public void incScore(){
+        this.score++;
+    }
+
+    public int getScore(){
+        return this.score;
+    }
+
+    public boolean win(){
+        return this.score == row * column - mineNum;
     }
 
 }

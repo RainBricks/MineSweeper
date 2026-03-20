@@ -14,10 +14,25 @@ public class Mine extends Tile{
             status = TileStatus.exploded;
             this.tileView.update(this.status);
         }
+
+        //If flagged, clicking does nothing
+        if (status == TileStatus.flagged) {
+            System.out.println("This tile is flagged!");
+            return true;
+        }
+
         return false;
     }
 
     @Override
     public void trigger() {
+    }
+
+    @Override
+    public void endgameReveal(){
+        if(status != TileStatus.exploded){
+            status = TileStatus.triggered;
+            tileView.update(status);
+        }
     }
 }

@@ -16,7 +16,7 @@ public class TileView extends Button {
         super.setBackground(
                 new Background(
                         new BackgroundFill(
-                                Color.rgb(192,192,192),//color gravy
+                                Color.rgb(192,192,192),//color gray
                                 new CornerRadii(1),
                                 new Insets(1)
                         )
@@ -52,7 +52,7 @@ public class TileView extends Button {
             super.setBackground(
                     new Background(
                             new BackgroundFill(
-                                    Color.rgb(255,255,255),
+                                    Color.rgb(255,255,255), //color white
                                     new CornerRadii(1),
                                     new Insets(1)
                             )
@@ -68,13 +68,45 @@ public class TileView extends Button {
             super.setBackground(
                     new Background(
                             new BackgroundFill(
-                                    Color.rgb(192,192,192),//color gravy
+                                    Color.rgb(192,192,192),//color gray
                                     new CornerRadii(1),
                                     new Insets(1)
                             )
                     )
             );
             super.setText("");
+            System.out.println("TileView::update complete");
+            return;
+        }
+
+        if(status == TileStatus.triggered)
+        {
+            super.setBackground(
+                    new Background(
+                            new BackgroundFill(
+                                    Color.rgb(255,192,192),//color pink
+                                    new CornerRadii(1),
+                                    new Insets(1)
+                            )
+                    )
+            );
+            super.setText("B");
+            System.out.println("TileView::update complete");
+            return;
+        }
+
+        if(status == TileStatus.exploded)
+        {
+            super.setBackground(
+                    new Background(
+                            new BackgroundFill(
+                                    Color.rgb(255,0,0),//color red
+                                    new CornerRadii(1),
+                                    new Insets(1)
+                            )
+                    )
+            );
+            super.setText("B");
             System.out.println("TileView::update complete");
             return;
         }

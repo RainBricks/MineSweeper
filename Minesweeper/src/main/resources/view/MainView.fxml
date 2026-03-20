@@ -16,6 +16,7 @@
                         <String fx:value="Easy" />
                         <String fx:value="Medium" />
                         <String fx:value="Hard" />
+                        <String fx:value="Custom" />
                     </FXCollections>
                 </items>
 
@@ -26,8 +27,30 @@
         </HBox>
 
 
+        <HBox fx:id="customPane" alignment="CENTER" spacing="10"
+              visible="false" managed="false">
+            <Label text="Height:"/>
+            <TextField fx:id="customRow" text="30" prefWidth="70"/>
+            <Label text="Width:"/>
+            <TextField fx:id="customColumn" text="30" prefWidth="70"/>
+            <Label text="Mines:"/>
+            <TextField fx:id="customMineNum" text="30" prefWidth="70"/>
+            <Button fx:id="updateCustomButton" text="Update" onAction="#updateCustom"/>
+
+        </HBox>
+
+
+        <Label fx:id="scoreLabel" text="Score: 0"/>
+        <Label fx:id="resultLabel" text="Win/Lose"/>
+
         <GridPane fx:id="gameGridPane" style="-fx-background-color: #e0e0e0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
         </GridPane>
+
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Button fx:id="restartButton" text="Restart" onAction="#restart"/>
+        </HBox>
+
 
 </VBox>
