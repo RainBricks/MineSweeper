@@ -58,15 +58,7 @@
 
     </AnchorPane>
 
-        <HBox fx:id="customPane" alignment="CENTER" managed="false" spacing="10" visible="false">
-            <Label text="Height:" />
-            <TextField fx:id="customRow" prefWidth="70" text="30" />
-            <Label text="Width:" />
-            <TextField fx:id="customColumn" prefWidth="70" text="30" />
-            <Label text="Mines:" />
-            <TextField fx:id="customMineNum" prefWidth="70" text="30" />
-            <Button fx:id="updateCustomButton" onAction="#updateCustom" text="Update" />
-        </HBox>
+
 
         <GridPane fx:id="gameGridPane" alignment="CENTER" style="-fx-background-color: #e0e0e0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 

@@ -3,21 +3,20 @@ package com.example.minesweeper.controller;
 import com.example.minesweeper.board.Board;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -45,14 +44,6 @@ public class Controller implements Initializable {
     @FXML private Label scoreLabel;
 
     @FXML private Button restartButton;
-
-
-    @FXML private HBox customPane;
-    @FXML private TextField customRow;
-    @FXML private TextField customColumn;
-    @FXML private TextField customMineNum;
-    @FXML private Button updateCustomButton;
-
 
     @FXML
     private GridPane gameGridPane;
@@ -121,14 +112,9 @@ public class Controller implements Initializable {
 
                     if (newValue.equals("Custom")) {
                         // show the custom inputs
-                        customPane.setVisible(true);
-                        customPane.setManaged(true);
+                        updateCustom();
                         // do not start a new game until user presses "Start"
                         return;
-                    } else {
-                        // hide custom inputs
-                        customPane.setVisible(false);
-                        customPane.setManaged(false);
                     }
 
                     switch(newValue)
@@ -160,12 +146,70 @@ public class Controller implements Initializable {
     }
 
     //for custom mode
-    @FXML
-    private void updateCustom(ActionEvent event) {
-        this.row = Integer.parseInt(customRow.getText());
-        this.column = Integer.parseInt(customColumn.getText());
-        this.mineNum = Integer.parseInt(customMineNum.getText());
-        initTiles();
+    private void updateCustom() {
+        try {
+
+            //a new custom dialog
+            //load fxml file here
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/customDialog.fxml"));
+            DialogPane dialogPane = loader.load();
+            CustomDialogController controller = loader.getController();
+
+            //create new dialog here
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Custom Difficulty");
+            dialog.setDialogPane(dialogPane);
+
+            //buttons
+            ButtonType confirmButtonType = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType);
+
+            dialog.initStyle(StageStyle.UNDECORATED);
+
+            //check if input is valid
+            Button confirmButton = (Button) dialog.getDialogPane().lookupButton(confirmButtonType);
+            confirmButton.addEventFilter(ActionEvent.ACTION, actionEvent -> {
+                try {
+                    int rows = controller.getRows();
+                    int cols = controller.getCols();
+                    int mines = controller.getMines();
+
+                    if (rows <= 0 || cols <= 0 || mines <= 0) {
+                        controller.setWarning("Invalid number");
+                        actionEvent.consume();
+                    } else if (mines >= rows * cols) {
+                        controller.setWarning("Too many mines");
+                        actionEvent.consume();
+                    } else if(rows > 30 || cols > 30) {
+                        controller.setWarning("Size too big");
+                        actionEvent.consume();
+                    }else if(rows < 8 || cols < 8) {
+                        controller.setWarning("Size too small");
+                        actionEvent.consume();
+                    }
+                } catch (NumberFormatException e) {
+                    controller.setWarning("Not a valid number!");
+                    actionEvent.consume();
+                }
+            });
+
+            dialog.showAndWait().ifPresent(result -> {
+
+                //if the result of the dialog is confirm
+                if (result == confirmButtonType) {
+                    try {
+                        this.row = controller.getRows();
+                        this.column = controller.getCols();
+                        this.mineNum = controller.getMines();
+                    } catch (NumberFormatException e) {
+                        //leave it empty, cause default value already exists
+                    }
+                }
+            });
+            initTiles();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initTiles()//Refresh the game plane
@@ -176,7 +220,7 @@ public class Controller implements Initializable {
             stage.setHeight(SETTINGS_BAR_HEIGHT + TILE_SIZE * (this.row +1));
             stage.setWidth(TILE_SIZE * (this.column + 1));
         }catch (NullPointerException e){
-
+            //only be executed when app starts
         }
         //clear existing  game status
         clicked = false;
