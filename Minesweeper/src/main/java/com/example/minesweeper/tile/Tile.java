@@ -79,14 +79,15 @@ public class Tile {
         if(status == TileStatus.closed)
         {
             status = TileStatus.flagged;
+            tileView.update(status);
             System.out.println("Tile at " + this.x + " , " + this.y + "is flagged");
         }
         else if(status == TileStatus.flagged)
         {
             status = TileStatus.closed;
+            tileView.update(status);
             System.out.println("Tile at " + this.x + " , " + this.y + "is unflagged");
         }
-        tileView.update(status);
 
 
 

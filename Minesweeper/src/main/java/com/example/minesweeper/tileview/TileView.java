@@ -1,45 +1,43 @@
 package com.example.minesweeper.tileview;
 
 import com.example.minesweeper.enums.TileStatus;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 
 
 public class TileView extends Button {
+
+
+    private static final int CELL_SIZE = 24;
+
+
     public TileView()
     {
         super();
-        super.setBackground(
-                new Background(
-                        new BackgroundFill(
-                                Color.rgb(192,192,192),//color gravy
-                                new CornerRadii(1),
-                                new Insets(1)
-                        )
-                )
+
+        super.setMinSize(CELL_SIZE, CELL_SIZE);
+        super.setPrefSize(CELL_SIZE, CELL_SIZE);
+        super.setMaxSize(CELL_SIZE, CELL_SIZE);
+
+
+        super.setStyle(
+                "-fx-padding: 0;" +
+                        "-fx-background-color: transparent;" +
+                        "-fx-background-insets: 0;" +
+                        "-fx-background-radius: 0;" +
+                        "-fx-border-width: 0;" +
+                        "-fx-border-insets: 0;"
         );
 
+        this.setImage(TileStatus.closed);
     }
 
     public void update(int minesAround)
     {
-        super.setBackground(
-                new Background(
-                        new BackgroundFill(
-                                Color.rgb(255,255,255),//color white
-                                new CornerRadii(1),//corner radius
-                                new Insets(1)//padding
-                        )
-                )
-        );
-        if(minesAround != 0)
-        {
-            super.setText(String.valueOf(minesAround));
-        }
+
+        this.setImage(minesAround);
         System.out.println("TileView::update complete");
 
     }
@@ -47,37 +45,32 @@ public class TileView extends Button {
     public void update(TileStatus status)
     {
 
-        if(status == TileStatus.flagged)
-        {
-            super.setBackground(
-                    new Background(
-                            new BackgroundFill(
-                                    Color.rgb(255,255,255),
-                                    new CornerRadii(1),
-                                    new Insets(1)
-                            )
-                    )
-            );
-            super.setText("F");
-            System.out.println("TileView::update complete");
-            return;
-        }
+        this.setImage(status);
 
-        if(status == TileStatus.closed)
-        {
-            super.setBackground(
-                    new Background(
-                            new BackgroundFill(
-                                    Color.rgb(192,192,192),//color gravy
-                                    new CornerRadii(1),
-                                    new Insets(1)
-                            )
-                    )
-            );
-            super.setText("");
-            System.out.println("TileView::update complete");
-            return;
-        }
+    }
+
+    private void setImage(int minesAround)
+    {
+        Image image = new Image(getClass().getResourceAsStream("/images/" +  minesAround + ".gif"));
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(CELL_SIZE);
+        imageView.setFitHeight(CELL_SIZE);
+
+        imageView.setPreserveRatio(false);
+
+        super.setGraphic(imageView);
+    }
+
+    private void setImage(TileStatus status)
+    {
+        Image image = new Image(getClass().getResourceAsStream("/images/" +  status + ".gif"));
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(CELL_SIZE);
+        imageView.setFitHeight(CELL_SIZE);
+
+        imageView.setPreserveRatio(false);
+
+        super.setGraphic(imageView);
     }
 
 
