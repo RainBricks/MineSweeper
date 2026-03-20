@@ -92,13 +92,14 @@ public class Controller implements Initializable {
 
         difficulty.getSelectionModel().selectedItemProperty().addListener(
                 (_, oldValue, newValue) -> {
-                    if(oldValue.equals(newValue))return;
+                    if(oldValue.equals(newValue)) return;
                     System.out.println("Change Difficulty: " + oldValue + " -> " + newValue);
+
+                    restartButton.setGraphic(restartButtonNormalUnpressedImageView);
 
                     if (newValue.equals("Custom")) {
                         // show the custom inputs
                         updateCustom();
-                        // do not start a new game until user presses "Start"
                         return;
                     }
 
@@ -108,22 +109,23 @@ public class Controller implements Initializable {
                             this.row = 8;
                             this.column = 8;
                             this.mineNum = 10;
-                            initTiles();
+
                             break;
                         case "Medium":
                             this.row = 16;
                             this.column = 16;
                             this.mineNum = 40;
-                            initTiles();
+
                             break;
                         case "Hard":
                             this.row = 16;
                             this.column = 30;
                             this.mineNum = 99;
-                            initTiles();
+
                             break;
 
                     }
+                    initTiles();
                 }
         );
 
