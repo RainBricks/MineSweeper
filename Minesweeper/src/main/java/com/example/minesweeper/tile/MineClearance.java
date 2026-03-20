@@ -10,28 +10,15 @@ public class MineClearance extends Tile{
     @Override
     public boolean click() {
 
-        this.board.makeShielded();
 
-        if(status == TileStatus.closed)
+
+        if(status != TileStatus.opened)
         {
-            System.out.println("MineClearance is clicked");
-            status = TileStatus.opened;
-            this.tileView.update(this.minesAround);
-            return true;
+            this.board.makeShielded();
+            System.out.println("Shield enabled!");
         }
 
-        //If flagged, clicking does nothing
-        if (status == TileStatus.flagged) {
-            System.out.println("This tile is flagged!");
-            return true;
-        }
-
-        if(status == TileStatus.triggered){
-            System.out.println("Mine Clearance is triggered");
-            this.tileView.update(this.status);
-        }
-
-        return false;
+        return super.click();
     }
 
     @Override

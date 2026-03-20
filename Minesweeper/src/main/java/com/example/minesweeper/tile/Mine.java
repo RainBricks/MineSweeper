@@ -12,7 +12,9 @@ public class Mine extends Tile{
 
         if(this.board.isShielded()){
             this.board.useShield();
-            this.status = TileStatus.flagged;
+            this.flag();
+            System.out.println("Shield used!");
+
             return true;
         }
 
