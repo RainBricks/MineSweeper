@@ -48,8 +48,18 @@ public class Controller implements Initializable {
     @FXML
     private GridPane gameGridPane;
 
-    @FXML
-    private ComboBox<String> difficulty;
+    @FXML private ComboBox<String> difficulty;
+
+
+
+    @FXML private ImageView upperBoarder;
+
+    @FXML private ImageView middleBoarder;
+
+
+    @FXML private ImageView lowerBoarder;
+
+
 
 
     public Controller()
@@ -215,13 +225,22 @@ public class Controller implements Initializable {
     public void initTiles()//Refresh the game plane
     {
         try {
+
+            //set the size of the window
             Stage stage = (Stage) root.getScene().getWindow();
-            stage.setResizable(false);
-            stage.setHeight(SETTINGS_BAR_HEIGHT + TILE_SIZE * (this.row +1));
-            stage.setWidth(TILE_SIZE * (this.column + 1));
+            System.out.println(stage.getWidth());
+            stage.setHeight(SETTINGS_BAR_HEIGHT + TILE_SIZE * this.row  + BOARDER_HEIGHT * 3 + STAGE_GAP_VERT);
+            stage.setWidth(TILE_SIZE * this.column  + BOARDER_WIDTH * 2 + STAGE_GAP_HOR);
+
+            //set the sizes of the borders
+            upperBoarder.setFitWidth(TILE_SIZE * this.column );
+            middleBoarder.setFitWidth(TILE_SIZE * this.column );
+            lowerBoarder.setFitWidth(TILE_SIZE * this.column );
         }catch (NullPointerException e){
-            //only be executed when app starts
+            //should only be executed when app starts
         }
+
+
         //clear existing  game status
         clicked = false;
         gameEnded = false;
