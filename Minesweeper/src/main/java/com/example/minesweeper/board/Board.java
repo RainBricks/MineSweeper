@@ -17,11 +17,8 @@ public class Board {
     private boolean gotMinus;
     private int minusVal;
 
-    private boolean doFlagRandom;
     private ArrayList<Integer> mineXList;
     private ArrayList<Integer> mineYList;
-    private int randomMineX;
-    private int randomMineY;
 
     private Board()
     {
@@ -204,11 +201,11 @@ public class Board {
     }
 
     public void makeFlagRandom(){
-        this.doFlagRandom = true;
         Random random = new Random();
         int rand = random.nextInt(this.mineXList.size());
-        randomMineX = mineXList.get(rand);
-        randomMineY = mineYList.get(rand);
+        int randomMineX = mineXList.get(rand);
+        int randomMineY = mineYList.get(rand);
+        this.getTileAt(randomMineX, randomMineY).flag();
     }
 
     public boolean win(){
