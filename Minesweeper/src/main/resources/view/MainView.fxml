@@ -5,56 +5,48 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.minesweeper.controller.Controller">
+<VBox  fx:id="root" prefHeight="350" prefWidth="280" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.minesweeper.controller.Controller">
 
-        <HBox alignment="CENTER" spacing="200">
+        <HBox alignment="CENTER" prefHeight="50">
+            <HBox HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+                <ComboBox fx:id="difficulty" >
 
-            <ComboBox fx:id="difficulty" prefWidth="100">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Easy" />
+                            <String fx:value="Medium" />
+                            <String fx:value="Hard" />
+                            <String fx:value="Custom" />
+                        </FXCollections>
+                    </items>
 
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
+                    <value>
                         <String fx:value="Easy" />
-                        <String fx:value="Medium" />
-                        <String fx:value="Hard" />
-                        <String fx:value="Custom" />
-                    </FXCollections>
-                </items>
+                    </value>
+                </ComboBox>
+            </HBox>
+            <HBox HBox.hgrow="ALWAYS" alignment="CENTER">
+                    <Button fx:id="restartButton" onAction="#restart" style="-fx-padding: 0;                          -fx-background-color: transparent;                          -fx-background-insets: 0;                          -fx-background-radius: 0;                          -fx-border-width: 0;                          -fx-border-insets: 0">
 
-                <value>
-                    <String fx:value="Easy" />
-                </value>
-            </ComboBox>
-
-            <Button fx:id="restartButton" style=
-                    "-fx-padding: 0;
-            -fx-background-color: transparent;
-            -fx-background-insets: 0;
-            -fx-background-radius: 0;
-            -fx-border-width: 0;
-            -fx-border-insets: 0"
-                    onAction="#restart">
-
-            </Button>
-
-            <Label fx:id="scoreLabel" text="Score: 0"/>
-
+                    </Button>
+            </HBox>
+            <HBox HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
+                    <Label fx:id="scoreLabel" text="Score: 0" />
+            </HBox>
         </HBox>
 
 
-        <HBox fx:id="customPane" alignment="CENTER" spacing="10"
-              visible="false" managed="false">
-            <Label text="Height:"/>
-            <TextField fx:id="customRow" text="30" prefWidth="70"/>
-            <Label text="Width:"/>
-            <TextField fx:id="customColumn" text="30" prefWidth="70"/>
-            <Label text="Mines:"/>
-            <TextField fx:id="customMineNum" text="30" prefWidth="70"/>
-            <Button fx:id="updateCustomButton" text="Update" onAction="#updateCustom"/>
+        <HBox fx:id="customPane" alignment="CENTER" managed="false" spacing="10" visible="false">
+            <Label text="Height:" />
+            <TextField fx:id="customRow" prefWidth="70" text="30" />
+            <Label text="Width:" />
+            <TextField fx:id="customColumn" prefWidth="70" text="30" />
+            <Label text="Mines:" />
+            <TextField fx:id="customMineNum" prefWidth="70" text="30" />
+            <Button fx:id="updateCustomButton" onAction="#updateCustom" text="Update" />
         </HBox>
 
-        <Label fx:id="resultLabel" text="Win/Lose"/>
-
-        <GridPane fx:id="gameGridPane" style="-fx-background-color: #e0e0e0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <GridPane fx:id="gameGridPane" alignment="CENTER" style="-fx-background-color: #e0e0e0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
         </GridPane>
 

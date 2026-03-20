@@ -14,11 +14,15 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static com.example.minesweeper.consts.UIConsts.*;
 
 public class Controller implements Initializable {
     private final Board board;
@@ -36,18 +40,9 @@ public class Controller implements Initializable {
     private ImageView restartButtonWinImageView;
     private ImageView restartButtonLoseImageView;
 
-    /*
-    @FXML
-    private AnchorPane topSection;
+    @FXML private VBox root;
 
-    @FXML
-    private AnchorPane bottomSection;
-    */
-
-    @FXML
-    private Label scoreLabel;
-    @FXML
-    private Label resultLabel;
+    @FXML private Label scoreLabel;
 
     @FXML private Button restartButton;
 
@@ -88,23 +83,23 @@ public class Controller implements Initializable {
         }
 
         restartButtonNormalUnpressedImageView = new ImageView(new Image(smile_unpressed));
-        restartButtonNormalUnpressedImageView.setFitWidth(30);
-        restartButtonNormalUnpressedImageView.setFitHeight(30);
+        restartButtonNormalUnpressedImageView.setFitWidth(RESTART_BUTTON_SIZE);
+        restartButtonNormalUnpressedImageView.setFitHeight(RESTART_BUTTON_SIZE);
         restartButtonNormalUnpressedImageView.setPreserveRatio(false);
 
         restartButtonNormalPressedImageView = new ImageView(new Image(smile_pressed));
-        restartButtonNormalPressedImageView.setFitWidth(30);
-        restartButtonNormalPressedImageView.setFitHeight(30);
+        restartButtonNormalPressedImageView.setFitWidth(RESTART_BUTTON_SIZE);
+        restartButtonNormalPressedImageView.setFitHeight(RESTART_BUTTON_SIZE);
         restartButtonNormalPressedImageView.setPreserveRatio(false);
 
         restartButtonWinImageView = new ImageView(new Image(win));
-        restartButtonWinImageView.setFitWidth(30);
-        restartButtonWinImageView.setFitHeight(30);
+        restartButtonWinImageView.setFitWidth(RESTART_BUTTON_SIZE);
+        restartButtonWinImageView.setFitHeight(RESTART_BUTTON_SIZE);
         restartButtonWinImageView.setPreserveRatio(false);
 
         restartButtonLoseImageView = new ImageView(new Image(lose));
-        restartButtonLoseImageView.setFitWidth(30);
-        restartButtonLoseImageView.setFitHeight(30);
+        restartButtonLoseImageView.setFitWidth(RESTART_BUTTON_SIZE);
+        restartButtonLoseImageView.setFitHeight(RESTART_BUTTON_SIZE);
         restartButtonLoseImageView.setPreserveRatio(false);
 
         restartButton.setGraphic(restartButtonNormalUnpressedImageView);
@@ -160,6 +155,8 @@ public class Controller implements Initializable {
                         }
                 }
         );
+
+
     }
 
     //for custom mode
@@ -173,6 +170,14 @@ public class Controller implements Initializable {
 
     public void initTiles()//Refresh the game plane
     {
+        try {
+            Stage stage = (Stage) root.getScene().getWindow();
+            stage.setResizable(false);
+            stage.setHeight(SETTINGS_BAR_HEIGHT + TILE_SIZE * (this.row +1));
+            stage.setWidth(TILE_SIZE * (this.column + 1));
+        }catch (NullPointerException e){
+
+        }
         //clear existing  game status
         clicked = false;
         gameEnded = false;
@@ -181,8 +186,6 @@ public class Controller implements Initializable {
         board.createBoard(row,column,mineNum);
 
         scoreLabel.setText("Score: 0");
-        resultLabel.setText("Let's see ehhh");
-
 
         //display game plane
         this.displayGamePlane();
@@ -213,7 +216,6 @@ public class Controller implements Initializable {
             }
         }
 
-        resultLabel.setText(result ? "You win" : "You lose");
         restartButton.setGraphic(result?restartButtonWinImageView:restartButtonLoseImageView);
 
     }

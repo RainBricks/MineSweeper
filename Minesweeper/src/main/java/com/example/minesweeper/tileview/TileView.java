@@ -7,20 +7,22 @@ import javafx.scene.image.ImageView;
 
 import java.io.InputStream;
 
+import static com.example.minesweeper.consts.UIConsts.TILE_SIZE;
+
 
 public class TileView extends Button {
 
 
-    private static final int CELL_SIZE = 24;
+
 
 
     public TileView()
     {
         super();
 
-        super.setMinSize(CELL_SIZE, CELL_SIZE);
-        super.setPrefSize(CELL_SIZE, CELL_SIZE);
-        super.setMaxSize(CELL_SIZE, CELL_SIZE);
+        super.setMinSize(TILE_SIZE, TILE_SIZE);
+        super.setPrefSize(TILE_SIZE, TILE_SIZE);
+        super.setMaxSize(TILE_SIZE, TILE_SIZE);
 
 
         super.setStyle(
@@ -61,8 +63,8 @@ public class TileView extends Button {
 
         Image image = new Image(input);
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(CELL_SIZE);
-        imageView.setFitHeight(CELL_SIZE);
+        imageView.setFitWidth(TILE_SIZE);
+        imageView.setFitHeight(TILE_SIZE);
 
         imageView.setPreserveRatio(false);
 
@@ -81,8 +83,8 @@ public class TileView extends Button {
 
         Image image = new Image(input);
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(CELL_SIZE);
-        imageView.setFitHeight(CELL_SIZE);
+        imageView.setFitWidth(TILE_SIZE);
+        imageView.setFitHeight(TILE_SIZE);
 
         imageView.setPreserveRatio(false);
 

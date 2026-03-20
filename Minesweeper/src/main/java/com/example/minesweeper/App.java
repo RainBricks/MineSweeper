@@ -18,6 +18,9 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
+        primaryStage.setTitle("Minesweeper");
+        primaryStage.setResizable(false);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
         Parent root;
         try {
