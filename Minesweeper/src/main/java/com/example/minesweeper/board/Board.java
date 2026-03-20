@@ -2,6 +2,7 @@ package com.example.minesweeper.board;
 
 import com.example.minesweeper.tile.*;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Board {
@@ -16,6 +17,12 @@ public class Board {
     private boolean gotMinus;
     private int minusVal;
 
+    private boolean doFlagRandom;
+    private ArrayList<Integer> mineXList;
+    private ArrayList<Integer> mineYList;
+    private int randomMineX;
+    private int randomMineY;
+
     private Board()
     {
         row = 0;
@@ -27,6 +34,9 @@ public class Board {
 
         gotMinus = false;
         minusVal = 10;
+
+        mineXList = new ArrayList<Integer>();
+        mineYList = new ArrayList<Integer>();
 
         createBoard(8,8,10);
     }
@@ -43,6 +53,9 @@ public class Board {
         this.mineNum = mineNum;
         this.tiles = new Tile[this.row][this.column];
 
+        mineXList = new ArrayList<Integer>();
+        mineYList = new ArrayList<Integer>();
+
         //fill in empty tiles
         for(int i = 0; i < row; i++){
             for(int j = 0; j < column; j++){
@@ -53,6 +66,8 @@ public class Board {
 
     public void startGame(int x,int y) {
 
+        mineXList = new ArrayList<Integer>();
+        mineYList = new ArrayList<Integer>();
         Random random = new Random();
         int randX,randY;//random number
 
@@ -68,6 +83,8 @@ public class Board {
             {
                 tiles[randX][randY] = new Mine(randX,randY);
                 isMine[randX][randY] = 1;
+                mineXList.add(randX);
+                mineYList.add(randY);
 
                 for(int j = randX - 1;j <= randX + 1;j++)
                 {
@@ -184,6 +201,14 @@ public class Board {
 
     public void makeGettingMinus(){
         this.gotMinus = true;
+    }
+
+    public void makeFlagRandom(){
+        this.doFlagRandom = true;
+        Random random = new Random();
+        int rand = random.nextInt(this.mineXList.size());
+        randomMineX = mineXList.get(rand);
+        randomMineY = mineYList.get(rand);
     }
 
     public boolean win(){
