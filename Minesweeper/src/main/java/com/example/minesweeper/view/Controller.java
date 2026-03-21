@@ -3,6 +3,7 @@ package com.example.minesweeper.view;
 import com.example.minesweeper.board.Board;
 import com.example.minesweeper.controller.GameController;
 import com.example.minesweeper.controller.GameListener;
+import com.example.minesweeper.controller.CounterController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -26,6 +28,7 @@ import static com.example.minesweeper.consts.UIConsts.*;
 
 public class Controller implements Initializable, GameListener {
     private GameController gameController;
+    private CounterController scoreCounterController;
 
     private ImageView restartButtonNormalUnpressedImageView;
     private ImageView restartButtonNormalPressedImageView;
@@ -42,14 +45,18 @@ public class Controller implements Initializable, GameListener {
     @FXML private ImageView lowerBoarder;
     @FXML private ImageView middleLeftBoarder;
     @FXML private ImageView middleRightBoarder;
+    @FXML HBox scoreCounterContainer;
 
     public Controller() {
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        scoreCounterController = new CounterController();
+        scoreCounterContainer.getChildren().add(scoreCounterController);
         gameController = new GameController();
         gameController.setListener(this);
+
 
         showBoard();
 
@@ -95,7 +102,8 @@ public class Controller implements Initializable, GameListener {
 
 
     private void showBoard() {
-        scoreLabel.setText("Score: 0");
+        //scoreLabel.setText("Score: 0");
+        scoreCounterController.setNum(0);
 
         displayGamePlane();
         adjustWindowSize();
@@ -139,7 +147,7 @@ public class Controller implements Initializable, GameListener {
 
     private void updateCustom() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/customDialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/CustomDialog.fxml"));
             DialogPane dialogPane = loader.load();
             CustomDialogController controller = loader.getController();
 
@@ -203,9 +211,9 @@ public class Controller implements Initializable, GameListener {
             root.setPrefHeight(SETTINGS_BAR_HEIGHT + TILE_SIZE * rows  + BOARDER_HEIGHT * 3);
             root.setPrefWidth(TILE_SIZE * cols  + BOARDER_WIDTH * 2);
 
-            upperBoarder.setFitWidth( (TILE_SIZE + 0.5)  * cols);
-            middleBoarder.setFitWidth((TILE_SIZE + 0.5)  * cols);
-            lowerBoarder.setFitWidth((TILE_SIZE + 0.5)  * cols);
+            upperBoarder.setFitWidth( (TILE_SIZE + 0.5)  * cols );
+            middleBoarder.setFitWidth((TILE_SIZE + 0.5)  * cols );
+            lowerBoarder.setFitWidth((TILE_SIZE + 0.5)  * cols );
 
             middleLeftBoarder.setFitHeight((TILE_SIZE + 0.5) * rows);
             middleRightBoarder.setFitHeight((TILE_SIZE + 0.5) * rows);
@@ -231,7 +239,8 @@ public class Controller implements Initializable, GameListener {
 
     @Override
     public void onScoreChange(int score) {
-        scoreLabel.setText("Score: " + score);
+        //scoreLabel.setText("Score: " + score);
+        scoreCounterController.setNum(score);
     }
 
     @Override

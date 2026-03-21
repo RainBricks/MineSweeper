@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+
+<fx:root type="StackPane" xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         fx:id="timerRoot"
+         stylesheets="@../style/counter.css">
+
+    <ImageView fx:id="backgroundImage"
+               fitWidth="90"
+               fitHeight="50"
+               preserveRatio="true"
+               styleClass="counter-bg-image"/>
+
+    <HBox fx:id="digitsContainer"
+          alignment="CENTER"
+          styleClass="digits-container">
+
+
+        <ImageView fx:id="digitHundreds"
+                   styleClass="digit-image"
+                   fitWidth="30"
+                   fitHeight="50"
+                   preserveRatio="true"/>
+
+
+        <ImageView fx:id="digitTens"
+                   styleClass="digit-image"
+                   fitWidth="30"
+                   fitHeight="50"
+                   preserveRatio="true"/>
+
+
+        <ImageView fx:id="digitOnes"
+                   styleClass="digit-image"
+                   fitWidth="30"
+                   fitHeight="50"
+                   preserveRatio="true"/>
+
+    </HBox>
+
+
+</fx:root>
