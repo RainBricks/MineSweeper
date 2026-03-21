@@ -1,5 +1,6 @@
 package com.example.minesweeper.board;
 
+import com.example.minesweeper.enums.TileStatus;
 import com.example.minesweeper.tile.*;
 
 import java.util.ArrayList;
@@ -114,8 +115,10 @@ public class Board {
         //generates MiniMine
         randX = random.nextInt(this.row);
         randY = random.nextInt(this.column);
-        if(randX != x && randY != y && isMine[randX][randY] != 1 && isMine[randX][randY] != 2)
+        while(!(randX != x && randY != y && isMine[randX][randY] != 1 && isMine[randX][randY] != 2))
         {
+            randX = random.nextInt(this.row);
+            randY = random.nextInt(this.column);
             tiles[randX][randY] = new MiniMine(randX,randY);
             isMine[randX][randY] = 3;
             for(int i = randX - 1; i <= randX + 1; i++){
@@ -132,6 +135,8 @@ public class Board {
         randY = random.nextInt(this.column);
         if(randX != x && randY != y && isMine[randX][randY] != 1 && isMine[randX][randY] != 2 && isMine[randX][randY] != 3)
         {
+            randX = random.nextInt(this.row);
+            randY = random.nextInt(this.column);
             tiles[randX][randY] = new Radar(randX,randY);
             isMine[randX][randY] = 4;
             for(int i = randX - 1; i <= randX + 1; i++){
@@ -154,8 +159,14 @@ public class Board {
     {
         for(int i = 0; i < row; i++){
             for(int j = 0; j < column; j++){
-                System.out.println(tiles[i][j].getStatus());
+                if(tiles[i][j].getStatus() == TileStatus.closed) System.out.print("#" + " ");
+                else if(tiles[i][j].getStatus() == TileStatus.flagged) System.out.print("F" + " ");
+                else if(tiles[i][j].getStatus() == TileStatus.triggered) System.out.print("?" + " ");
+                else if(tiles[i][j].getStatus() == TileStatus.opened) System.out.print(tiles[i][j].getMinesAround() + " ");
+                else if(tiles[i][j].getStatus() == TileStatus.exploded) System.out.print("X" + " ");
+                else if(tiles[i][j].getStatus() == TileStatus.minetriggered) System.out.print("B" + " ");
             }
+            System.out.println();
         }
     }
 
@@ -212,7 +223,12 @@ public class Board {
         int rand = random.nextInt(this.mineXList.size());
         int randomMineX = mineXList.get(rand);
         int randomMineY = mineYList.get(rand);
-        this.getTileAt(randomMineX, randomMineY).flag();
+        while(this.getTileAt(randomMineX, randomMineY).getStatus() != TileStatus.flagged){
+            rand = random.nextInt(this.mineXList.size());
+            randomMineX = mineXList.get(rand);
+            randomMineY = mineYList.get(rand);
+            this.getTileAt(randomMineX, randomMineY).flag();
+        }
     }
 
     public boolean win(){

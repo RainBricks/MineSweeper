@@ -27,6 +27,7 @@ public class Tile {
     {
         if(status == TileStatus.flagged)
         {
+            this.board.print();
             System.out.println("This tile is flagged!");
             return true;
         }
@@ -39,7 +40,10 @@ public class Tile {
             System.out.println("Tile at " + this.x + " , " + this.y + "is clicked");
 
 
-            if(minesAround != 0)return true;
+            if(minesAround != 0){
+                this.board.print();
+                return true;
+            }
 
             for(int i = x - 1;i <= x + 1;i++)
             {
@@ -49,7 +53,7 @@ public class Tile {
                 }
             }
         }
-
+        this.board.print();
         return true;
 
     }
@@ -62,9 +66,11 @@ public class Tile {
         status = TileStatus.opened;//open the tile
         this.board.incScore();//increase the score
         tileView.update(this.minesAround);//update status
-        System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
+        //System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
 
-        if(minesAround != 0)return;//if this a numbered tile then stop recursion
+        if(minesAround != 0){
+            return;//if this a numbered tile then stop recursion
+        }
 
         for(int i = x - 1;i <= x + 1;i++)
         {
@@ -73,6 +79,7 @@ public class Tile {
                 if(board.getTileAt(i,j) != null && !(i == x && j== y))board.getTileAt(i,j).trigger();
             }
         }
+        //this.board.print();
     }
 
     public void flag()
@@ -90,7 +97,7 @@ public class Tile {
             System.out.println("Tile at " + this.x + " , " + this.y + "is unflagged");
         }
 
-
+        this.board.print();
 
     }
 
@@ -101,6 +108,10 @@ public class Tile {
 
     public void addMinesAround() {
         this.minesAround ++;
+    }
+
+    public int getMinesAround(){
+        return this.minesAround;
     }
 
     public TileView getTileView() {
