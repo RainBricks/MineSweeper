@@ -58,6 +58,7 @@ public class MineClearance extends Tile{
 
     @Override
     public void endgameReveal(){
+        System.out.println("Mine Clearance is at " + x + " , " + y);
         status = TileStatus.triggered;
         tileView.update(status);
     }

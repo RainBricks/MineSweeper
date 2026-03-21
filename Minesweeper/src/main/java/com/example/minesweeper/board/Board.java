@@ -21,6 +21,10 @@ public class Board {
     private ArrayList<Integer> mineXList;
     private ArrayList<Integer> mineYList;
 
+    private boolean hasMineClearance;
+    private boolean hasMiniMine;
+    private boolean hasRadar;
+
     private Board()
     {
         row = 0;
@@ -35,6 +39,10 @@ public class Board {
 
         mineXList = new ArrayList<Integer>();
         mineYList = new ArrayList<Integer>();
+
+        hasMineClearance = false;
+        hasMiniMine = false;
+        hasRadar = false;
 
         createBoard(8,8,10);
     }
@@ -54,6 +62,10 @@ public class Board {
         mineXList = new ArrayList<Integer>();
         mineYList = new ArrayList<Integer>();
 
+        hasMineClearance = false;
+        hasMiniMine = false;
+        hasRadar = false;
+
         //fill in empty tiles
         for(int i = 0; i < row; i++){
             for(int j = 0; j < column; j++){
@@ -72,6 +84,7 @@ public class Board {
         int[][] isMine = new int[row][column]; // 1 = Mine, 2 = Clearance, 3 = MiniMine, 4 = Radar
 
         //System.out.println("Debug pos 1");
+
         //generate mines
         for(int i = 0;i < this.mineNum;i++)
         {
@@ -109,13 +122,13 @@ public class Board {
                     }
                 }
             }
-
+            hasMineClearance = true;
         }
 
         //generates MiniMine
         randX = random.nextInt(this.row);
         randY = random.nextInt(this.column);
-        while(!(randX != x && randY != y && isMine[randX][randY] != 1 && isMine[randX][randY] != 2))
+        if(randX != x && randY != y && isMine[randX][randY] != 1 && isMine[randX][randY] != 2)
         {
             randX = random.nextInt(this.row);
             randY = random.nextInt(this.column);
@@ -128,6 +141,7 @@ public class Board {
                     }
                 }
             }
+            hasMiniMine = true;
         }
 
         //generates Radar
@@ -146,6 +160,7 @@ public class Board {
                     }
                 }
             }
+            hasRadar = true;
         }
 
         //System.out.println("Debug pos 2");
@@ -232,8 +247,12 @@ public class Board {
     }
 
     public boolean win(){
-        if(!this.gotMinus) return this.score == row * column - mineNum - 1;
-        else return this.score == row * column - mineNum - minusVal;
+        if(!hasMiniMine){
+            return this.score == row * column - mineNum;
+        }else{
+            if(!this.gotMinus) return this.score == row * column - mineNum - 1;
+            else return this.score == row * column - mineNum - minusVal;
+        }
     }
 
 }
