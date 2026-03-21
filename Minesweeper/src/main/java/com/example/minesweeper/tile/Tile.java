@@ -45,8 +45,9 @@ public class Tile {
             }
 
             triggerMinesAround();
+            this.board.print();
         }
-        this.board.print();
+
         return true;
 
     }
@@ -94,15 +95,17 @@ public class Tile {
             status = TileStatus.flagged;
             tileView.update(status);
             System.out.println("Tile at " + this.x + " , " + this.y + "is flagged");
+            this.board.print();
         }
         else if(status == TileStatus.flagged)
         {
             status = TileStatus.closed;
             tileView.update(status);
             System.out.println("Tile at " + this.x + " , " + this.y + "is unflagged");
+            this.board.print();
         }
 
-        this.board.print();
+
 
     }
 
