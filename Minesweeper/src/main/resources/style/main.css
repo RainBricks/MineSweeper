@@ -3,6 +3,56 @@
     -fx-background-color: #2b2b2b;
 }
 
+.titlebar-background {
+    -fx-background-color: #788088;
+}
+
+
+
+.title-icon {
+    -fx-pref-width: 20px;
+    -fx-pref-height: 20px;
+    -fx-alignment: center;
+}
+
+.title-icon-image {
+    -fx-pref-width: 20px;
+    -fx-pref-height: 20px;
+    -fx-image: url("../images/icon.png");
+}
+
+.title-text {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f0f0f0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 1, 0, 0, 1);
+}
+
+.close-icon-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 2px;
+    -fx-pref-width: 20px;
+    -fx-pref-height: 20px;
+    -fx-cursor: hand;
+    -fx-alignment: center;
+    -fx-padding: 3px;
+}
+
+.close-line {
+    -fx-stroke: #cccccc;
+    -fx-stroke-width: 2px;
+}
+
+.close-icon-button:hover {
+    -fx-background-color: #e81123;
+}
+
+.close-icon-button:hover .close-line {
+    -fx-stroke: white;
+}
+
+
 
 .container-panel {
     -fx-background-color: #454a4d;

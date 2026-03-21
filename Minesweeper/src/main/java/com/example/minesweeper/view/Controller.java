@@ -4,6 +4,7 @@ import com.example.minesweeper.board.Board;
 import com.example.minesweeper.controller.GameController;
 import com.example.minesweeper.controller.GameListener;
 import com.example.minesweeper.controller.CounterController;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -206,7 +207,7 @@ public class Controller implements Initializable, GameListener {
         int cols = gameController.getColumn();
         try {
             Stage stage = (Stage) root.getScene().getWindow();
-            root.setPrefHeight(SETTINGS_BAR_HEIGHT + TILE_SIZE * rows  + BOARDER_HEIGHT * 3);
+            root.setPrefHeight(SETTINGS_BAR_HEIGHT + TILE_SIZE * rows  + BOARDER_HEIGHT * 3 + TITLE_BAR_HEIGHT);
             root.setPrefWidth(TILE_SIZE * cols  + BOARDER_WIDTH * 2);
 
             upperBoarder.setFitWidth( (TILE_SIZE + 0.5)  * cols );
@@ -256,10 +257,16 @@ public class Controller implements Initializable, GameListener {
     }
 
     @FXML
-    private void restart(ActionEvent event) {
+    public void restart(ActionEvent event) {
         restartButton.setGraphic(restartButtonNormalUnpressedImageView);
         gameController.restart();
     }
+
+    @FXML
+    public void closeGame(MouseEvent event) {
+        Platform.exit();
+    }
+
 
     public void tileClick(MouseEvent event) {
         Button btn = (Button) event.getSource();

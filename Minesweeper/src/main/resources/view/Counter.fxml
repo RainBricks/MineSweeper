@@ -8,13 +8,11 @@
          fx:id="timerRoot"
          stylesheets="@../style/counter.css">
 
-    <ImageView fx:id="backgroundImage"
-               fitWidth="83"
+    <ImageView fitWidth="83"
                fitHeight="50"
                styleClass="counter-bg-image"/>
 
-    <HBox fx:id="digitsContainer"
-          alignment="CENTER"
+    <HBox alignment="CENTER"
           styleClass="digits-container">
 
 

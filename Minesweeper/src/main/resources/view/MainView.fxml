@@ -6,7 +6,34 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.shape.Line?>
 <VBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.minesweeper.view.Controller" stylesheets="@../style/main.css">
+
+    <AnchorPane prefHeight="25" styleClass="titlebar-background">
+
+        <HBox alignment="CENTER_LEFT" spacing="8"
+              AnchorPane.leftAnchor="10"
+              AnchorPane.topAnchor="0"
+              AnchorPane.bottomAnchor="0">
+
+            <StackPane styleClass="title-icon">
+                <ImageView styleClass="title-icon-image"/>
+            </StackPane>
+
+            <Label text="Minesweeper" styleClass="title-text" />
+        </HBox>
+
+        <StackPane styleClass="close-icon-button"
+                   onMouseClicked="#closeGame"
+                   AnchorPane.rightAnchor="5"
+                   AnchorPane.topAnchor="2">
+            <Line endX="12" endY="12"
+                  styleClass="close-line"/>
+            <Line startX="12" endY="12"
+                  styleClass="close-line"/>
+        </StackPane>
+
+    </AnchorPane>
 
     <AnchorPane prefHeight="20">
         <ImageView fitHeight="20" fitWidth="20" AnchorPane.leftAnchor="0">

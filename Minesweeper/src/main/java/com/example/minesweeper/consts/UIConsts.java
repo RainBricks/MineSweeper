@@ -8,6 +8,7 @@ public final class UIConsts {
     public static final double TILE_SIZE = 34;
     public static final int RESTART_BUTTON_SIZE = 40;
     public static final int SETTINGS_BAR_HEIGHT = 50;
+    public static final int TITLE_BAR_HEIGHT = 30;
     public static final int BOARDER_HEIGHT = 20;
     public static final int BOARDER_WIDTH = 20;
 
