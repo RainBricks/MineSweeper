@@ -13,7 +13,7 @@
             <Image url="@../images/corner_up_left.png"/>
         </ImageView>
 
-        <ImageView fx:id="upperBoarder" fitHeight="20" fitWidth="276" AnchorPane.rightAnchor="20">
+        <ImageView fx:id="upperBoarder" fitHeight="20" fitWidth="276" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
             <Image url="@../images/border_hor.png"/>
         </ImageView>
 
@@ -23,7 +23,7 @@
     </AnchorPane>
 
     <AnchorPane prefHeight="50" styleClass="container-panel">
-        <ImageView fitHeight="50" fitWidth="20" AnchorPane.leftAnchor="0">
+        <ImageView fitHeight="51" fitWidth="20" AnchorPane.leftAnchor="0">
             <Image url="@../images/border_vert.png"/>
         </ImageView>
 
@@ -54,12 +54,13 @@
                 <Button fx:id="restartButton" onAction="#restart" styleClass="restart-button"/>
             </StackPane>
 
-            <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
-                <Label fx:id="scoreLabel" text="Score: 0" styleClass="score-label"/>
+            <HBox fx:id="scoreCounterContainer"  alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                <!--<Label fx:id="scoreLabel" text="Score: 0" styleClass="score-label"/>-->
+                <!--<fx:include source="Counter.fxml" />-->
             </HBox>
         </GridPane>
 
-        <ImageView fitHeight="50" fitWidth="20" AnchorPane.rightAnchor="0">
+        <ImageView fitHeight="51" fitWidth="20" AnchorPane.rightAnchor="0">
             <Image url="@../images/border_vert.png"/>
         </ImageView>
     </AnchorPane>
