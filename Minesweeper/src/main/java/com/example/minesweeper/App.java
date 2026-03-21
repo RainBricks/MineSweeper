@@ -1,19 +1,19 @@
 package com.example.minesweeper;
 
-import com.example.minesweeper.board.Board;
-import com.example.minesweeper.controller.Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class App extends Application {
 
-    private Controller controller;
-    private Board board;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -21,26 +21,30 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
+        primaryStage.setTitle("Minesweeper");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
-        Parent root = null;
+        Parent root;
         try {
             root = loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        board = Board.getBoard();
 
-        controller = loader.getController();
 
-        board.setController(controller);
 
-        controller.setBoard(board);
 
         Scene scene = new Scene(root);
 
         primaryStage.setScene(scene);
+
+        primaryStage.sizeToScene();
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/icon.png"))));
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.setResizable(false);
         primaryStage.show();
+
 
     }
 }

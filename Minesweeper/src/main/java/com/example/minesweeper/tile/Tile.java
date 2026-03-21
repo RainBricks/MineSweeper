@@ -2,88 +2,131 @@ package com.example.minesweeper.tile;
 
 import com.example.minesweeper.board.Board;
 import com.example.minesweeper.enums.TileStatus;
+import com.example.minesweeper.tileview.TileView;
 
 public class Tile {
 
-    protected TileStatus status;
-    private int minesAround;
+    protected int minesAround;
     protected Board board;
     protected int x;
     protected int y;
+    protected TileView tileView;
+    protected TileStatus status;
 
-    public Tile(Board board, int x, int y) {
-        this.board = board;
-        status = TileStatus.closed;
-        minesAround = 0;
+    public Tile(int x, int y) {
+        this.status = TileStatus.closed;
+        this.tileView = new TileView();
         this.x = x;
         this.y = y;
+        this.board = Board.getBoard();
+        tileView.setUserData(new int[]{x,y});
     }
 
+    //return value here means if player is alive
     public boolean click()
     {
         if(status == TileStatus.flagged)
         {
+            this.board.print();
             System.out.println("This tile is flagged!");
             return true;
         }
-        if(status == TileStatus.closed)
+
+        if(status != TileStatus.opened)
         {
+            if(status == TileStatus.closed)this.board.incScore();//increase the score
             status = TileStatus.opened;
+            updateView();
+            System.out.println("Tile at " + this.x + " , " + this.y + "is clicked");
+
+            if(minesAround != 0){
+                this.board.print();
+                return true;
+            }
+
+            triggerMinesAround();
         }
-        if(minesAround != 0)return true;
-        System.out.println("Tile at " + this.x + " , " + this.y + "is clicked");
-        if(board.getTileAt(x - 1,y) != null)board.getTileAt(x - 1,y).trigger();
-        if(board.getTileAt(x + 1,y) != null)board.getTileAt(x + 1,y).trigger();
-        if(board.getTileAt(x,y - 1) != null)board.getTileAt(x,y - 1).trigger();
-        if(board.getTileAt(x,y + 1) != null)board.getTileAt(x,y + 1).trigger();
-        if(board.getTileAt(x - 1,y - 1) != null)board.getTileAt(x - 1,y - 1).trigger();
-        if(board.getTileAt(x + 1,y + 1) != null)board.getTileAt(x + 1,y + 1).trigger();
-        if(board.getTileAt(x - 1,y - 1) != null)board.getTileAt(x - 1,y - 1).trigger();
-        if(board.getTileAt(x + 1,y + 1) != null)board.getTileAt(x + 1,y + 1).trigger();
+        this.board.print();
         return true;
+
     }
 
-    public void trigger()
+
+    protected void trigger()
     {
-        if(status != TileStatus.closed)return;
-        status = TileStatus.opened;
-        board.setTileAt(this.x,this.y,this.status,this.minesAround);
-        if(minesAround != 0)return;//if this a numbered tile then stop recursion
-        System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
-        if(board.getTileAt(x - 1,y) != null)board.getTileAt(x - 1,y).trigger();
-        if(board.getTileAt(x + 1,y) != null)board.getTileAt(x + 1,y).trigger();
-        if(board.getTileAt(x,y - 1) != null)board.getTileAt(x,y - 1).trigger();
-        if(board.getTileAt(x,y + 1) != null)board.getTileAt(x,y + 1).trigger();
-        if(board.getTileAt(x - 1,y - 1) != null)board.getTileAt(x - 1,y - 1).trigger();
-        if(board.getTileAt(x + 1,y + 1) != null)board.getTileAt(x + 1,y + 1).trigger();
-        if(board.getTileAt(x + 1,y - 1) != null)board.getTileAt(x + 1,y - 1).trigger();
-        if(board.getTileAt(x - 1,y + 1) != null)board.getTileAt(x - 1,y + 1).trigger();
+        if(status != TileStatus.closed)return;//if not closed then stop recursion
+
+        status = TileStatus.opened;//open the tile
+        this.board.incScore();//increase the score
+
+        updateView();
+        //System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
+
+        if(minesAround != 0){
+            return;//if this a numbered tile then stop recursion
+        }
+
+        triggerMinesAround();
+        //this.board.print();
+    }
+
+    protected void updateView()
+    {
+        tileView.update(this.minesAround);//update status
+    }
 
 
+    protected void triggerMinesAround()
+    {
+        for(int i = x - 1;i <= x + 1;i++)
+        {
+            for(int j = y - 1;j <= y + 1;j++)
+            {
+                if(board.getTileAt(i,j) != null && !(i == x && j == y))board.getTileAt(i,j).trigger();
+            }
+        }
     }
 
     public void flag()
     {
-        if(status != TileStatus.opened)
+        if(status == TileStatus.closed)
         {
-            if(status == TileStatus.closed){
-                status = TileStatus.flagged;
-                board.setTileAt(this.x,this.y,this.status,this.minesAround);
-                System.out.println("Tile at " + this.x + " , " + this.y + "is flagged");
-            }
-            else if(status == TileStatus.flagged) status = TileStatus.closed;
+            status = TileStatus.flagged;
+            tileView.update(status);
+            System.out.println("Tile at " + this.x + " , " + this.y + "is flagged");
         }
+        else if(status == TileStatus.flagged)
+        {
+            status = TileStatus.closed;
+            tileView.update(status);
+            System.out.println("Tile at " + this.x + " , " + this.y + "is unflagged");
+        }
+
+        this.board.print();
+
     }
 
-    public int getMinesAround() {
-        return minesAround;
+    public void endgameReveal(){
+
     }
+
 
     public void addMinesAround() {
         this.minesAround ++;
     }
 
+    public int getMinesAround(){
+        return this.minesAround;
+    }
+
+    public TileView getTileView() {
+        return tileView;
+    }
+
     public TileStatus getStatus() {
         return status;
     }
+
+
+
 }
