@@ -19,7 +19,7 @@ public class TileView extends Button {
 
     public void update(int minesAround) {
         this.setImageWithNumber(minesAround);
-        System.out.println("TileView::update complete");
+        //System.out.println("TileView::update complete");
     }
 
     public void update(TileStatus status) {
