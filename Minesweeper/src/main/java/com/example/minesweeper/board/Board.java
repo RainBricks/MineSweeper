@@ -238,12 +238,7 @@ public class Board {
         int rand = random.nextInt(this.mineXList.size());
         int randomMineX = mineXList.get(rand);
         int randomMineY = mineYList.get(rand);
-        while(this.getTileAt(randomMineX, randomMineY).getStatus() != TileStatus.flagged){
-            rand = random.nextInt(this.mineXList.size());
-            randomMineX = mineXList.get(rand);
-            randomMineY = mineYList.get(rand);
-            this.getTileAt(randomMineX, randomMineY).flag();
-        }
+        this.getTileAt(randomMineX, randomMineY).flag();
     }
 
     public boolean win(){

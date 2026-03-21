@@ -1,12 +1,12 @@
 package com.example.minesweeper.controller;
 
 import com.example.minesweeper.board.Board;
+import com.example.minesweeper.enums.GameStatus;
 
 public class GameController {
     private final Board board;
     private int row, column, mineNum;
-    private boolean clicked;
-    private boolean gameEnded;
+    private GameStatus status;
     private GameListener listener;
 
     public GameController() {
@@ -14,6 +14,7 @@ public class GameController {
         row = 8;
         column = 8;
         mineNum = 10;
+        status = GameStatus.idle;
         board.createBoard(row, column, mineNum);
     }
 
@@ -29,26 +30,25 @@ public class GameController {
         this.column = col;
         this.mineNum = mines;
         board.createBoard(row, col, mines);
-        clicked = false;
-        gameEnded = false;
+        status = GameStatus.idle;
         if (listener != null) {
             listener.onBoardCreated();
         }
     }
 
     public void click(int x, int y) {
-        if (gameEnded) {
+        if (status == GameStatus.gameEnded) {
             return;
         }
-        if (!clicked) {
+        if (status == GameStatus.idle) {
             board.startGame(x, y);
-            clicked = true;
+            status = GameStatus.firstClicked;
             if (listener != null) {
                 listener.onBoardChanged();
             }
         }
         if (!board.getTileAt(x, y).click()) {
-            gameEnded = true;
+            status = GameStatus.gameEnded;
             Board board = Board.getBoard();
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < column; j++) {
@@ -65,7 +65,7 @@ public class GameController {
                 listener.onScoreChange(board.getScore());
             }
             if (board.win()) {
-                gameEnded = true;
+                status = GameStatus.gameEnded;
                 Board board = Board.getBoard();
                 for (int i = 0; i < row; i++) {
                     for (int j = 0; j < column; j++) {
@@ -85,7 +85,7 @@ public class GameController {
     }
 
     public void flag(int x, int y) {
-        if (gameEnded || !clicked) {
+        if (status == GameStatus.gameEnded || status == GameStatus.idle) {
             return;
         }
         board.getTileAt(x, y).flag();
