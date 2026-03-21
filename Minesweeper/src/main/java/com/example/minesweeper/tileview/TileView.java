@@ -30,6 +30,10 @@ public class TileView extends Button {
         this.setImage("radar.gif");
     }
 
+    public void playMinusAnime() {this.setImage("minus.gif");}
+
+    public void playShieldAnime() {this.setImage("shield.gif");}
+
     private void setImageWithNumber(int minesAround) {
         this.setImage(minesAround + ".png");
     }

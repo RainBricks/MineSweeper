@@ -1,6 +1,8 @@
 package com.example.minesweeper.tile;
 
 import com.example.minesweeper.enums.TileStatus;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 
 public class MiniMine extends Tile{
     public MiniMine(int x, int y) {
@@ -10,14 +12,27 @@ public class MiniMine extends Tile{
     @Override
     public boolean click() {
 
+        //if it's not opened, then do the operations
         if(status != TileStatus.opened)
         {
-            this.board.makeGettingMinus();
-            this.board.decScore();
-            System.out.println("You got minus point!");
-        }
 
-        return super.click();
+            tileView.playMinusAnime();
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            pause.setOnFinished(e -> {
+                this.board.makeGettingMinus();
+                this.board.decScore();
+                System.out.println("You got minus point!");
+                super.click();
+            });
+            pause.play();
+        }
+        //if it is opened, we perform click method in the father class
+        else
+            super.click();
+
+        return true;
+
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.example.minesweeper.tile;
 
 import com.example.minesweeper.enums.TileStatus;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 
 public class MineClearance extends Tile{
     public MineClearance(int x, int y) {
@@ -12,13 +14,26 @@ public class MineClearance extends Tile{
 
 
 
+        //if it's not opened, then do the operations
         if(status != TileStatus.opened)
         {
-            this.board.makeShielded();
-            System.out.println("Shield enabled!");
-        }
 
-        return super.click();
+            tileView.playShieldAnime();
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            pause.setOnFinished(e -> {
+                this.board.makeShielded();
+                System.out.println("Shield enabled!");
+                super.click();
+            });
+            pause.play();
+        }
+        //if it is opened, we perform click method in the father class
+        else
+            super.click();
+
+        return true;
+
     }
 
     @Override
