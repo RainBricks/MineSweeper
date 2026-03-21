@@ -1,6 +1,8 @@
 package com.example.minesweeper.tile;
 
 import com.example.minesweeper.enums.TileStatus;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 
 public class Radar extends Tile{
     public Radar(int x, int y) {
@@ -9,13 +11,25 @@ public class Radar extends Tile{
     @Override
     public boolean click() {
 
+        //if it's not opened, then do the operations
         if(status != TileStatus.opened)
         {
-            this.board.makeFlagRandom();
-            System.out.println("Random Mine is Flagged!");
-        }
 
-        return super.click();
+            tileView.playRadarAnime();
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            pause.setOnFinished(e -> {
+                this.board.makeFlagRandom();
+                System.out.println("Random Mine is Flagged!");
+                super.click();
+            });
+            pause.play();
+        }
+        //if it is opened, we perform click method in the father class
+        else
+            super.click();
+
+        return true;
     }
 
     @Override

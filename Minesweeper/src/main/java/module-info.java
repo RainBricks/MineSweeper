@@ -7,4 +7,5 @@ module com.example.minesweeper {
 
     opens com.example.minesweeper to javafx.fxml;
     opens com.example.minesweeper.controller to javafx.fxml;
+    opens com.example.minesweeper.view to javafx.fxml;
 }

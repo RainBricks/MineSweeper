@@ -4,9 +4,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class App extends Application {
 
@@ -37,6 +39,7 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/minetriggered.png"))));
         primaryStage.show();
 
 

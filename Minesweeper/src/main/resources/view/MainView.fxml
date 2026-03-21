@@ -6,7 +6,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.minesweeper.controller.Controller" stylesheets="@../style/main.css">
+<VBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.minesweeper.view.Controller" stylesheets="@../style/main.css">
 
     <AnchorPane prefHeight="20">
         <ImageView fitHeight="20" fitWidth="20" AnchorPane.leftAnchor="0">
