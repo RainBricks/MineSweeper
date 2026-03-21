@@ -40,7 +40,7 @@ public class Mine extends Tile{
     }
 
     @Override
-    public void trigger() {
+    protected void trigger() {
     }
 
     @Override

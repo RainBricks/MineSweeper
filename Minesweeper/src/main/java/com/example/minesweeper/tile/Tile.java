@@ -34,24 +34,17 @@ public class Tile {
 
         if(status != TileStatus.opened)
         {
+            if(status == TileStatus.closed)this.board.incScore();//increase the score
             status = TileStatus.opened;
-            this.board.incScore();//increase the score
-            tileView.update(this.minesAround);//update current view
+            updateView();
             System.out.println("Tile at " + this.x + " , " + this.y + "is clicked");
-
 
             if(minesAround != 0){
                 this.board.print();
                 return true;
             }
 
-            for(int i = x - 1;i <= x + 1;i++)
-            {
-                for(int j = y - 1;j <= y + 1;j++)
-                {
-                    if(board.getTileAt(i,j) != null && !(i == x && j == y))board.getTileAt(i,j).trigger();
-                }
-            }
+            triggerMinesAround();
         }
         this.board.print();
         return true;
@@ -59,27 +52,39 @@ public class Tile {
     }
 
 
-    public void trigger()
+    protected void trigger()
     {
         if(status != TileStatus.closed)return;//if not closed then stop recursion
 
         status = TileStatus.opened;//open the tile
         this.board.incScore();//increase the score
-        tileView.update(this.minesAround);//update status
+
+        updateView();
         //System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
 
         if(minesAround != 0){
             return;//if this a numbered tile then stop recursion
         }
 
+        triggerMinesAround();
+        //this.board.print();
+    }
+
+    protected void updateView()
+    {
+        tileView.update(this.minesAround);//update status
+    }
+
+
+    protected void triggerMinesAround()
+    {
         for(int i = x - 1;i <= x + 1;i++)
         {
             for(int j = y - 1;j <= y + 1;j++)
             {
-                if(board.getTileAt(i,j) != null && !(i == x && j== y))board.getTileAt(i,j).trigger();
+                if(board.getTileAt(i,j) != null && !(i == x && j == y))board.getTileAt(i,j).trigger();
             }
         }
-        //this.board.print();
     }
 
     public void flag()

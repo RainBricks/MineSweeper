@@ -13,31 +13,18 @@ public class MineClearance extends Tile{
     public boolean click() {
 
 
-
         //if it's not opened, then do the operations
-        if(status != TileStatus.opened)
-        {
-
-            tileView.playShieldAnime();
-
-            PauseTransition pause = new PauseTransition(Duration.seconds(1));
-            pause.setOnFinished(e -> {
-                this.board.makeShielded();
-                System.out.println("Shield enabled!");
-                super.click();
-            });
-            pause.play();
+        if (status != TileStatus.opened) {
+            this.board.makeShielded();
+            System.out.println("Shield enabled!");
         }
-        //if it is opened, we perform click method in the father class
-        else
-            super.click();
 
-        return true;
+        return super.click();
 
     }
 
     @Override
-    public void trigger()
+    protected void trigger()
     {
         if(status != TileStatus.closed)return;//if not closed then stop recursion
 
@@ -45,15 +32,10 @@ public class MineClearance extends Tile{
         tileView.update(this.status);//update status
         System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
 
+        this.board.incScore();//increase the score
         if(this.minesAround != 0)return;//if this a numbered tile then stop recursion
 
-        for(int i = x - 1; i <= x + 1;i++)
-        {
-            for(int j = y - 1;j <= y + 1;j++)
-            {
-                if(board.getTileAt(i,j) != null && !(i == x && j== y))board.getTileAt(i,j).trigger();
-            }
-        }
+        super.triggerMinesAround();
     }
 
     @Override
@@ -61,5 +43,16 @@ public class MineClearance extends Tile{
         System.out.println("Mine Clearance is at " + x + " , " + y);
         status = TileStatus.triggered;
         tileView.update(status);
+    }
+
+    @Override
+    protected void updateView() {
+
+        tileView.playShieldAnime();
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        pause.setOnFinished(e -> {
+            tileView.update(this.minesAround);//update current view
+        });
+        pause.play();
     }
 }
