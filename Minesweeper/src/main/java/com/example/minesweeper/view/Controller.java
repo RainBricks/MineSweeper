@@ -236,14 +236,6 @@ public class Controller implements Initializable, GameListener {
 
     @Override
     public void onGameOver(boolean win) {
-        Board board = Board.getBoard();
-        int rows = gameController.getRow();
-        int cols = gameController.getColumn();
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                board.getTileAt(i, j).endgameReveal();
-            }
-        }
         restartButton.setGraphic(win ? restartButtonWinImageView : restartButtonLoseImageView);
     }
 

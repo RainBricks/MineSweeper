@@ -49,6 +49,14 @@ public class GameController {
         }
         if (!board.getTileAt(x, y).click()) {
             gameEnded = true;
+            Board board = Board.getBoard();
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < column; j++) {
+                    board.getTileAt(i, j).endgameReveal();
+                }
+            }
+            System.out.println("You Lose!");
+            board.print();
             if (listener != null) {
                 listener.onGameOver(false);
             }
@@ -58,6 +66,14 @@ public class GameController {
             }
             if (board.win()) {
                 gameEnded = true;
+                Board board = Board.getBoard();
+                for (int i = 0; i < row; i++) {
+                    for (int j = 0; j < column; j++) {
+                        board.getTileAt(i, j).endgameReveal();
+                    }
+                }
+                System.out.println("You Win!");
+                board.print();
                 if (listener != null) {
                     listener.onGameOver(true);
                 }
@@ -79,7 +95,9 @@ public class GameController {
     }
 
     public void restart() {
+        System.out.println("Game Restarted");
         createBoard(row, column, mineNum);
+        this.board.print();
     }
 
     public void setDifficulty(int row, int col, int mines) {

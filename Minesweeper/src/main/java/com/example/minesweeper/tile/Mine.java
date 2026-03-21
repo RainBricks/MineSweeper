@@ -27,8 +27,6 @@ public class Mine extends Tile{
         if(status == TileStatus.closed)
         {
             status = TileStatus.exploded;
-            System.out.println("You Lose!");
-            this.board.print();
             this.tileView.update(this.status);
         }
 
