@@ -63,13 +63,6 @@ public class TileView extends Button {
         super.setMinSize(TILE_SIZE, TILE_SIZE);
         super.setPrefSize(TILE_SIZE, TILE_SIZE);
         super.setMaxSize(TILE_SIZE, TILE_SIZE);
-        super.setStyle(
-                "-fx-padding: 0;" +
-                        "-fx-background-color: transparent;" +
-                        "-fx-background-insets: 0;" +
-                        "-fx-background-radius: 0;" +
-                        "-fx-border-width: 0;" +
-                        "-fx-border-insets: 0;"
-        );
+        super.getStyleClass().add("tile");
     }
 }

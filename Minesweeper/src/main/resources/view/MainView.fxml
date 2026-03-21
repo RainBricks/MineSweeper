@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Line?>
 <VBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.minesweeper.view.Controller" stylesheets="@../style/main.css">
 
-    <AnchorPane prefHeight="25" styleClass="titlebar-background">
+    <AnchorPane fx:id="titleBar" prefHeight="25" styleClass="titlebar-background">
 
         <HBox alignment="CENTER_LEFT" spacing="8"
               AnchorPane.leftAnchor="10"
@@ -17,7 +17,7 @@
               AnchorPane.bottomAnchor="0">
 
             <StackPane styleClass="title-icon">
-                <ImageView styleClass="title-icon-image"/>
+                <Label styleClass="title-icon-image"/>
             </StackPane>
 
             <Label text="Minesweeper" styleClass="title-text" />

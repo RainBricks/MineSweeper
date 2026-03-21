@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -36,6 +37,11 @@ public class Controller implements Initializable, GameListener {
     private ImageView restartButtonWinImageView;
     private ImageView restartButtonLoseImageView;
 
+
+    private double xOffset = 0;
+    private double yOffset = 0;
+
+
     @FXML private VBox root;
     @FXML private Button restartButton;
     @FXML private GridPane gameGridPane;
@@ -45,18 +51,32 @@ public class Controller implements Initializable, GameListener {
     @FXML private ImageView lowerBoarder;
     @FXML private ImageView middleLeftBoarder;
     @FXML private ImageView middleRightBoarder;
-    @FXML HBox scoreCounterContainer;
+    @FXML private HBox scoreCounterContainer;
+    @FXML private AnchorPane titleBar;
 
     public Controller() {
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
         scoreCounterController = new CounterController();
         scoreCounterContainer.getChildren().add(scoreCounterController);
         gameController = new GameController();
         gameController.setListener(this);
 
+
+        titleBar.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+
+        titleBar.setOnMouseDragged(event -> {
+            Stage stage = (Stage) root.getScene().getWindow();
+            stage.setX(event.getScreenX() - xOffset);
+            stage.setY(event.getScreenY() - yOffset);
+        });
 
         showBoard();
 
