@@ -9,9 +9,8 @@
          stylesheets="@../style/counter.css">
 
     <ImageView fx:id="backgroundImage"
-               fitWidth="90"
+               fitWidth="83"
                fitHeight="50"
-               preserveRatio="true"
                styleClass="counter-bg-image"/>
 
     <HBox fx:id="digitsContainer"
@@ -22,21 +21,21 @@
         <ImageView fx:id="digitHundreds"
                    styleClass="digit-image"
                    fitWidth="30"
-                   fitHeight="50"
+                   fitHeight="45"
                    preserveRatio="true"/>
 
 
         <ImageView fx:id="digitTens"
                    styleClass="digit-image"
                    fitWidth="30"
-                   fitHeight="50"
+                   fitHeight="45"
                    preserveRatio="true"/>
 
 
         <ImageView fx:id="digitOnes"
                    styleClass="digit-image"
                    fitWidth="30"
-                   fitHeight="50"
+                   fitHeight="45"
                    preserveRatio="true"/>
 
     </HBox>

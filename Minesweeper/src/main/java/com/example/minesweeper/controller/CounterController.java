@@ -36,8 +36,8 @@ public class CounterController extends StackPane {
 
     public void initDigits()
     {
-        digits = new Image[9];
-        for(int i = 0; i < 9; i++)
+        digits = new Image[10];
+        for(int i = 0; i <= 9; i++)
         {
             digits[i] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/d" + i + ".png")));
         }

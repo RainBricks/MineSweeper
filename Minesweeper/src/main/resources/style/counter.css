@@ -8,8 +8,7 @@
 
 
 .digits-container {
-    -fx-alignment: right;
-    -fx-spacing: 0;
+    -fx-spacing: 2;
     -fx-padding: 0 0 0 0px;
     -fx-translate-x: 0px;
     -fx-translate-y: 0px;

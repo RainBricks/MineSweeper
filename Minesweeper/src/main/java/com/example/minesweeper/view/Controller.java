@@ -101,7 +101,6 @@ public class Controller implements Initializable, GameListener {
 
 
     private void showBoard() {
-        //scoreLabel.setText("Score: 0");
         scoreCounterController.setNum(0);
 
         displayGamePlane();
@@ -238,7 +237,6 @@ public class Controller implements Initializable, GameListener {
 
     @Override
     public void onScoreChange(int score) {
-        //scoreLabel.setText("Score: " + score);
         scoreCounterController.setNum(score);
     }
 
