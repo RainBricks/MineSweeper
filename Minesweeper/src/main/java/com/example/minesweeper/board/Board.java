@@ -250,7 +250,7 @@ public class Board {
         if(!hasMiniMine){
             return this.score == row * column - mineNum;
         }else{
-            if(!this.gotMinus) return this.score == row * column - mineNum - 1;
+            if(!this.gotMinus) return this.score == row * column - mineNum ;
             else return this.score == row * column - mineNum - minusVal;
         }
     }
