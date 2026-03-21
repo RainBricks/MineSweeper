@@ -36,7 +36,6 @@ public class Controller implements Initializable, GameListener {
     private ImageView restartButtonLoseImageView;
 
     @FXML private VBox root;
-    @FXML private Label scoreLabel;
     @FXML private Button restartButton;
     @FXML private GridPane gameGridPane;
     @FXML private ComboBox<String> difficulty;
