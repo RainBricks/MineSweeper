@@ -3,7 +3,6 @@ package com.example.minesweeper.board;
 import com.example.minesweeper.enums.TileStatus;
 import com.example.minesweeper.tile.*;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Board {
@@ -40,9 +39,9 @@ public class Board {
         this.mineNum = mineNum;
         this.tiles = new Tile[this.row][this.column];
 
-        this.hasMineClearance = random.nextBoolean();;
-        this.hasMiniMine = random.nextBoolean();;
-        this.hasRadar = random.nextBoolean();;
+        this.hasMineClearance = random.nextBoolean();
+        this.hasMiniMine = random.nextBoolean();
+        this.hasRadar = random.nextBoolean();
 
         //fill in empty tiles
         for(int i = 0; i < row; i++){

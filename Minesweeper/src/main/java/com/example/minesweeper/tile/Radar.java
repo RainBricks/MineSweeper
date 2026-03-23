@@ -5,8 +5,8 @@ import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
 public class Radar extends Tile{
-    private int mineX;
-    private int mineY;
+    private final int mineX;
+    private final int mineY;
 
     public Radar(int x, int y,int mineX, int mineY) {
         super(x, y);
@@ -51,7 +51,7 @@ public class Radar extends Tile{
 
         tileView.playRadarAnime();
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
-        pause.setOnFinished(e -> {
+        pause.setOnFinished(_ -> {
             tileView.update(this.minesAround);//update current view
         });
         pause.play();
