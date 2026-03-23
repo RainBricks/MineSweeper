@@ -29,20 +29,30 @@ public class Board {
     public void createBoard(int row,int column,int mineNum)
     {
         Random random = new Random();
+        this.hasMineClearance = random.nextBoolean();
+        this.hasMiniMine = random.nextBoolean();
+        this.hasRadar = random.nextBoolean();
+        initBoard(row,column,mineNum);
+    }
+
+    public void createBoard(int row,int column,int mineNum,boolean hasMineClearance,boolean hasMiniMine,boolean hasRadar)
+    {
+        this.hasMineClearance = hasMineClearance;
+        this.hasMiniMine = hasMiniMine;
+        this.hasRadar = hasRadar;
+        initBoard(row,column,mineNum);
+    }
+
+    private void initBoard(int row,int column,int mineNum)
+    {
         this.score = 0;
         this.shielded = false;
         this.gotMinus = false;
         this.minusVal = 10;
-
         this.row = row;
         this.column = column;
         this.mineNum = mineNum;
         this.tiles = new Tile[this.row][this.column];
-
-        this.hasMineClearance = random.nextBoolean();
-        this.hasMiniMine = random.nextBoolean();
-        this.hasRadar = random.nextBoolean();
-
         //fill in empty tiles
         for(int i = 0; i < row; i++){
             for(int j = 0; j < column; j++){

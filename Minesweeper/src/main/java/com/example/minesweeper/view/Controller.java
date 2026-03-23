@@ -2,7 +2,6 @@ package com.example.minesweeper.view;
 
 import com.example.minesweeper.board.Board;
 import com.example.minesweeper.controller.GameController;
-import com.example.minesweeper.controller.GameListener;
 import com.example.minesweeper.controller.CounterController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;

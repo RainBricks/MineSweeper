@@ -1,4 +1,4 @@
-package com.example.minesweeper.controller;
+package com.example.minesweeper.view;
 
 public interface GameListener {
     void onScoreChange(int score);

@@ -2,6 +2,7 @@ package com.example.minesweeper.controller;
 
 import com.example.minesweeper.board.Board;
 import com.example.minesweeper.enums.GameStatus;
+import com.example.minesweeper.view.GameListener;
 
 public class GameController {
     private final Board board;
