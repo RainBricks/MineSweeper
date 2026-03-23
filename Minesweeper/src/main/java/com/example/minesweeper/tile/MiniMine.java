@@ -6,8 +6,9 @@ import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
 public class MiniMine extends Tile{
-    public MiniMine(int x, int y) {
+    public MiniMine(int x, int y, int minesAround) {
         super(x, y);
+        this.minesAround = minesAround;
     }
 
     @Override

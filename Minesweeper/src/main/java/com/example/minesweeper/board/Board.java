@@ -101,8 +101,7 @@ public class Board {
                 randY = random.nextInt(this.column);
             } while (!(randX != x && randY != y && isMine[randX][randY] != 1 && isMine[randX][randY] != 2 && isMine[randX][randY] != 3));
 
-            tempTile = new Radar(randX, randY, minex, miney);
-            tempTile.setMinesAround(this.tiles[randX][randY].getMinesAround());
+            tempTile = new Radar(randX, randY, this.tiles[randX][randY].getMinesAround(), minex, miney);
             this.tiles[randX][randY] = tempTile;
             isMine[randX][randY] = 4;
 
@@ -118,8 +117,7 @@ public class Board {
             }
             while(!(randX != x && randY != y && isMine[randX][randY] != 1));
 
-            tempTile = new MineClearance(randX, randY);
-            tempTile.setMinesAround(this.tiles[randX][randY].getMinesAround());
+            tempTile = new MineClearance(randX, randY, this.tiles[randX][randY].getMinesAround());
             this.tiles[randX][randY] = tempTile;
             isMine[randX][randY] = 2;
 
@@ -133,8 +131,7 @@ public class Board {
                 randY = random.nextInt(this.column);
             }while(!(randX != x && randY != y && isMine[randX][randY] != 1 && isMine[randX][randY] != 2));
 
-            tempTile = new MiniMine(randX, randY);
-            tempTile.setMinesAround(this.tiles[randX][randY].getMinesAround());
+            tempTile = new MiniMine(randX, randY, this.tiles[randX][randY].getMinesAround());
             this.tiles[randX][randY] = tempTile;
             isMine[randX][randY] = 3;
 

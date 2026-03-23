@@ -9,8 +9,9 @@ public class Radar extends Tile{
     private final int mineX;
     private final int mineY;
 
-    public Radar(int x, int y,int mineX, int mineY) {
+    public Radar(int x, int y, int minesAround, int mineX, int mineY) {
         super(x, y);
+        this.minesAround = minesAround;
         this.mineX = mineX;
         this.mineY = mineY;
     }

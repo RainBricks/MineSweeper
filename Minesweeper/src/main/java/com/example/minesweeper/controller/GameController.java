@@ -32,7 +32,7 @@ public class GameController {
         hasMineClearance = true;
         hasRadar = true;
         hasMiniMine = true;
-        Board.getBoard().createBoard(8, 8, 8, true,true, true);
+        Board.getBoard().createBoard(8, 8, 10, true,true, true);
     }
 
     public void setListener(GameListener listener) {

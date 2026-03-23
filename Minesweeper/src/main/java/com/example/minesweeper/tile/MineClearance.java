@@ -6,8 +6,9 @@ import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
 public class MineClearance extends Tile{
-    public MineClearance(int x, int y) {
+    public MineClearance(int x, int y, int minesAround) {
         super(x, y);
+        this.minesAround = minesAround;
     }
 
     @Override

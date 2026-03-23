@@ -114,7 +114,6 @@ public class Tile {
         this.minesAround ++;
     }
 
-    public void setMinesAround(int minesAround){ this.minesAround = minesAround;}
 
     public int getMinesAround(){
         return this.minesAround;
