@@ -5,14 +5,19 @@ import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
 public class Radar extends Tile{
-    public Radar(int x, int y) {
+    private int mineX;
+    private int mineY;
+
+    public Radar(int x, int y,int mineX, int mineY) {
         super(x, y);
+        this.mineX = mineX;
+        this.mineY = mineY;
     }
     @Override
     public boolean click() {
         //if it's not opened, then do the operations
         if (status != TileStatus.opened) {
-            this.board.makeFlagRandom();
+            this.board.getTileAt(mineX,mineY).flag();
             System.out.println("Random Mine is Flagged!");
         }
 
