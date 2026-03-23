@@ -105,8 +105,6 @@ public class Tile {
             this.board.print();
         }
 
-
-
     }
 
     public void endgameReveal(){
@@ -117,6 +115,8 @@ public class Tile {
     public void addMinesAround() {
         this.minesAround ++;
     }
+
+    public void setMinesAround(int minesAround){ this.minesAround = minesAround;}
 
     public int getMinesAround(){
         return this.minesAround;

@@ -2,10 +2,6 @@ package com.example.minesweeper.tileview;
 
 import com.example.minesweeper.enums.TileStatus;
 import javafx.scene.control.Button;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.example.minesweeper.consts.UIConsts.TILE_SIZE;
 
 public class TileView extends Button {
 
@@ -49,8 +45,8 @@ public class TileView extends Button {
     }
 
     private void setTileSize() {
-        this.setMinSize(TILE_SIZE, TILE_SIZE);
-        this.setPrefSize(TILE_SIZE, TILE_SIZE);
-        this.setMaxSize(TILE_SIZE, TILE_SIZE);
+        this.setMinSize(34, 34);
+        this.setPrefSize(34, 34);
+        this.setMaxSize(34, 34);
     }
 }

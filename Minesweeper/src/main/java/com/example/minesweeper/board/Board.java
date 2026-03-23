@@ -27,23 +27,6 @@ public class Board {
 
     private Board()
     {
-        row = 0;
-        column = 0;
-        mineNum = 0;
-
-        score = 0;
-        shielded = false;
-
-        gotMinus = false;
-        minusVal = 10;
-
-        mineXList = new ArrayList<Integer>();
-        mineYList = new ArrayList<Integer>();
-
-        hasMineClearance = false;
-        hasMiniMine = false;
-        hasRadar = false;
-
         createBoard(8,8,10);
     }
 
@@ -51,33 +34,33 @@ public class Board {
     {
         this.score = 0;
         this.shielded = false;
-        gotMinus = false;
-        minusVal = 10;
+        this.gotMinus = false;
+        this.minusVal = 10;
 
         this.row = row;
         this.column = column;
         this.mineNum = mineNum;
         this.tiles = new Tile[this.row][this.column];
 
-        mineXList = new ArrayList<Integer>();
-        mineYList = new ArrayList<Integer>();
+        this.mineXList = new ArrayList<>();
+        this.mineYList = new ArrayList<>();
 
-        hasMineClearance = false;
-        hasMiniMine = false;
-        hasRadar = false;
+        this.hasMineClearance = false;
+        this.hasMiniMine = false;
+        this.hasRadar = false;
 
         //fill in empty tiles
         for(int i = 0; i < row; i++){
             for(int j = 0; j < column; j++){
-                tiles[i][j] = new Tile(i,j);
+                this.tiles[i][j] = new Tile(i,j);
             }
         }
     }
 
     public void startGame(int x,int y) {
 
-        mineXList = new ArrayList<Integer>();
-        mineYList = new ArrayList<Integer>();
+        this.mineXList = new ArrayList<>();
+        this.mineYList = new ArrayList<>();
         Random random = new Random();
         int randX,randY;//random number
 
@@ -92,10 +75,10 @@ public class Board {
             randY = random.nextInt(this.column);
             if(randX != x && randY != y && isMine[randX][randY] != 1)
             {
-                tiles[randX][randY] = new Mine(randX,randY);
+                this.tiles[randX][randY] = new Mine(randX,randY);
                 isMine[randX][randY] = 1;
-                mineXList.add(randX);
-                mineYList.add(randY);
+                this.mineXList.add(randX);
+                this.mineYList.add(randY);
 
                 for(int j = randX - 1;j <= randX + 1;j++)
                 {
@@ -111,18 +94,15 @@ public class Board {
         //generates MineClearance
         randX = random.nextInt(this.row);
         randY = random.nextInt(this.column);
+        Tile tempTile;
         if(randX != x && randY != y && isMine[randX][randY] != 1) {
-            tiles[randX][randY] = new MineClearance(randX, randY);
+
+            tempTile = new MineClearance(randX, randY);
+            tempTile.setMinesAround(this.tiles[randX][randY].getMinesAround());
+            this.tiles[randX][randY] = tempTile;
             isMine[randX][randY] = 2;
 
-            for(int i = randX - 1; i <= randX + 1; i++){
-                for(int j = randY - 1; j <= randY + 1; j++){
-                    if( !(i == randX && j == randY) && this.getTileAt(i, j) != null){
-                        if(isMine[i][j] == 1) tiles[randX][randY].addMinesAround();
-                    }
-                }
-            }
-            hasMineClearance = true;
+            this.hasMineClearance = true;
         }
 
         //generates MiniMine
@@ -130,18 +110,12 @@ public class Board {
         randY = random.nextInt(this.column);
         if(randX != x && randY != y && isMine[randX][randY] != 1 && isMine[randX][randY] != 2)
         {
-            randX = random.nextInt(this.row);
-            randY = random.nextInt(this.column);
-            tiles[randX][randY] = new MiniMine(randX,randY);
+            tempTile = new MiniMine(randX, randY);
+            tempTile.setMinesAround(this.tiles[randX][randY].getMinesAround());
+            this.tiles[randX][randY] = tempTile;
             isMine[randX][randY] = 3;
-            for(int i = randX - 1; i <= randX + 1; i++){
-                for(int j = randY - 1; j <= randY + 1; j++){
-                    if( !(i == randX && j == randY) && this.getTileAt(i, j) != null){
-                        if(isMine[i][j] == 1) tiles[randX][randY].addMinesAround();
-                    }
-                }
-            }
-            hasMiniMine = true;
+
+            this.hasMiniMine = true;
         }
 
         //generates Radar
@@ -149,37 +123,27 @@ public class Board {
         randY = random.nextInt(this.column);
         if(randX != x && randY != y && isMine[randX][randY] != 1 && isMine[randX][randY] != 2 && isMine[randX][randY] != 3)
         {
-            randX = random.nextInt(this.row);
-            randY = random.nextInt(this.column);
-            tiles[randX][randY] = new Radar(randX,randY);
+            tempTile = new Radar(randX, randY);
+            tempTile.setMinesAround(this.tiles[randX][randY].getMinesAround());
+            this.tiles[randX][randY] = tempTile;
             isMine[randX][randY] = 4;
-            for(int i = randX - 1; i <= randX + 1; i++){
-                for(int j = randY - 1; j <= randY + 1; j++){
-                    if( !(i == randX && j == randY) && this.getTileAt(i, j) != null){
-                        if(isMine[i][j] == 1) tiles[randX][randY].addMinesAround();
-                    }
-                }
-            }
-            hasRadar = true;
-        }
 
+            this.hasRadar = true;
+        }
         //System.out.println("Debug pos 2");
         this.print();
     }
-
-
-
 
     public void print()
     {
         for(int i = 0; i < row; i++){
             for(int j = 0; j < column; j++){
-                if(tiles[i][j].getStatus() == TileStatus.closed) System.out.print("#" + " ");
-                else if(tiles[i][j].getStatus() == TileStatus.flagged) System.out.print("F" + " ");
-                else if(tiles[i][j].getStatus() == TileStatus.triggered) System.out.print("?" + " ");
-                else if(tiles[i][j].getStatus() == TileStatus.opened) System.out.print(tiles[i][j].getMinesAround() + " ");
-                else if(tiles[i][j].getStatus() == TileStatus.exploded) System.out.print("X" + " ");
-                else if(tiles[i][j].getStatus() == TileStatus.minetriggered) System.out.print("B" + " ");
+                if(this.tiles[i][j].getStatus() == TileStatus.closed) System.out.print("#" + " ");
+                else if(this.tiles[i][j].getStatus() == TileStatus.flagged) System.out.print("F" + " ");
+                else if(this.tiles[i][j].getStatus() == TileStatus.triggered) System.out.print("?" + " ");
+                else if(this.tiles[i][j].getStatus() == TileStatus.opened) System.out.print(tiles[i][j].getMinesAround() + " ");
+                else if(this.tiles[i][j].getStatus() == TileStatus.exploded) System.out.print("X" + " ");
+                else if(this.tiles[i][j].getStatus() == TileStatus.minetriggered) System.out.print("B" + " ");
             }
             System.out.println();
         }
@@ -188,10 +152,9 @@ public class Board {
     public Tile getTileAt(int x,int y)
     {
         try {
-            return tiles[x][y];
+            return this.tiles[x][y];
         }catch (ArrayIndexOutOfBoundsException e)
         {
-            //System.out.println("Error: invalid location");
             return null;
         }
     }
@@ -236,17 +199,17 @@ public class Board {
     public void makeFlagRandom(){
         Random random = new Random();
         int rand = random.nextInt(this.mineXList.size());
-        int randomMineX = mineXList.get(rand);
-        int randomMineY = mineYList.get(rand);
+        int randomMineX = this.mineXList.get(rand);
+        int randomMineY = this.mineYList.get(rand);
         this.getTileAt(randomMineX, randomMineY).flag();
     }
 
     public boolean win(){
-        if(!hasMiniMine){
-            return this.score == row * column - mineNum;
+        if(!this.hasMiniMine){
+            return this.score == this.row * this.column - this.mineNum;
         }else{
-            if(!this.gotMinus) return this.score == row * column - mineNum ;
-            else return this.score == row * column - mineNum - minusVal;
+            if(!this.gotMinus) return this.score == this.row * this.column - this.mineNum ;
+            else return this.score == this.row * this.column - this.mineNum - this.minusVal;
         }
     }
 
