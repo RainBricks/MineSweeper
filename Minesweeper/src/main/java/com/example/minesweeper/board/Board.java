@@ -23,16 +23,15 @@ public class Board {
 
     private Board()
     {
-        createBoard(8,8,10);
     }
 
-    public void createBoard(int row,int column,int mineNum)
+    private static class BoardHolder{
+        private static final Board board = new Board();
+    }
+
+    public static Board getBoard()
     {
-        Random random = new Random();
-        this.hasMineClearance = random.nextBoolean();
-        this.hasMiniMine = random.nextBoolean();
-        this.hasRadar = random.nextBoolean();
-        initBoard(row,column,mineNum);
+        return BoardHolder.board;
     }
 
     public void createBoard(int row,int column,int mineNum,boolean hasMineClearance,boolean hasMiniMine,boolean hasRadar)
@@ -62,7 +61,6 @@ public class Board {
     }
 
     public void startGame(int x,int y) {
-
         Random random = new Random();
         int randX = 0,randY = 0;//random number
 
@@ -169,16 +167,6 @@ public class Board {
         {
             return null;
         }
-    }
-
-
-    private static class BoardHolder{
-        private static final Board board = new Board();
-    }
-
-    public static Board getBoard()
-    {
-        return BoardHolder.board;
     }
 
     public void incScore(){

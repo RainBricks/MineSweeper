@@ -1,5 +1,6 @@
 package com.example.minesweeper.tile;
 
+import com.example.minesweeper.board.Board;
 import com.example.minesweeper.enums.TileStatus;
 
 public class Mine extends Tile{
@@ -10,8 +11,8 @@ public class Mine extends Tile{
     @Override
     public boolean click() {
 
-        if(this.board.isShielded()){
-            this.board.useShield();
+        if(Board.getBoard().isShielded()){
+            Board.getBoard().useShield();
             this.flag();
             System.out.println("Shield used!");
 

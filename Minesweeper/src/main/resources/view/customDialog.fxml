@@ -23,19 +23,29 @@
             <TextField fx:id="colField" prefWidth="100" text="8" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
             <Label text="Mines:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-         <Label fx:id="warningLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="mineField" prefWidth="100" text="10" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-         <columnConstraints>
-            <ColumnConstraints />
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
+
+            <Label text="Special Tiles:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+
+            <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <CheckBox fx:id="mineClearanceBox" text="MineClearance" />
+                <CheckBox fx:id="radarBox" text="Radar" />
+                <CheckBox fx:id="miniMineBox" text="MiniMine" />
+            </VBox>
+
+            <Label fx:id="warningLabel" textFill="red" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+            <columnConstraints>
+                <ColumnConstraints />
+                <ColumnConstraints minWidth="100" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
         </GridPane>
     </content>
 </DialogPane>

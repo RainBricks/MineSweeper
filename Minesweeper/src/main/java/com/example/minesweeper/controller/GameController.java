@@ -4,19 +4,35 @@ import com.example.minesweeper.board.Board;
 import com.example.minesweeper.enums.GameStatus;
 import com.example.minesweeper.view.GameListener;
 
+import java.util.Random;
+
 public class GameController {
-    private final Board board;
-    private int row, column, mineNum;
+
+    private int row;
+    private int column;
+    private int mineNum;
+    private boolean hasMineClearance;
+    private boolean hasRadar;
+    private boolean hasMiniMine;
+
+    private boolean isCustom;
+
     private GameStatus status;
+
     private GameListener listener;
 
     public GameController() {
-        board = Board.getBoard();
         row = 8;
         column = 8;
         mineNum = 10;
         status = GameStatus.idle;
-        board.createBoard(row, column, mineNum);
+
+        //at first start
+        isCustom = false;
+        hasMineClearance = true;
+        hasRadar = true;
+        hasMiniMine = true;
+        Board.getBoard().createBoard(8, 8, 8, true,true, true);
     }
 
     public void setListener(GameListener listener) {
@@ -26,11 +42,16 @@ public class GameController {
         }
     }
 
-    public void createBoard(int row, int col, int mines) {
+    public void createBoard(int row, int col, int mines, boolean mineClearance, boolean radar, boolean miniMine) {
         this.row = row;
         this.column = col;
         this.mineNum = mines;
-        board.createBoard(row, col, mines);
+        this.hasMineClearance = mineClearance;
+        this.hasRadar = radar;
+        this.hasMiniMine = miniMine;
+
+        Board.getBoard().createBoard(row, col, mines, mineClearance,miniMine, radar);
+
         status = GameStatus.idle;
         if (listener != null) {
             listener.onBoardCreated();
@@ -42,39 +63,37 @@ public class GameController {
             return;
         }
         if (status == GameStatus.idle) {
-            board.startGame(x, y);
+            Board.getBoard().startGame(x, y);
             status = GameStatus.firstClicked;
             if (listener != null) {
                 listener.onBoardChanged();
             }
         }
-        if (!board.getTileAt(x, y).click()) {
+        if (!Board.getBoard().getTileAt(x, y).click()) {
             status = GameStatus.gameEnded;
-            Board board = Board.getBoard();
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < column; j++) {
-                    board.getTileAt(i, j).endgameReveal();
+                    Board.getBoard().getTileAt(i, j).endgameReveal();
                 }
             }
             System.out.println("You Lose!");
-            board.print();
+            Board.getBoard().print();
             if (listener != null) {
                 listener.onGameOver(false);
             }
         } else {
             if (listener != null) {
-                listener.onScoreChange(board.getScore());
+                listener.onScoreChange(Board.getBoard().getScore());
             }
-            if (board.win()) {
+            if (Board.getBoard().win()) {
                 status = GameStatus.gameEnded;
-                Board board = Board.getBoard();
                 for (int i = 0; i < row; i++) {
                     for (int j = 0; j < column; j++) {
-                        board.getTileAt(i, j).endgameReveal();
+                        Board.getBoard().getTileAt(i, j).endgameReveal();
                     }
                 }
                 System.out.println("You Win!");
-                board.print();
+                Board.getBoard().print();
                 if (listener != null) {
                     listener.onGameOver(true);
                 }
@@ -89,20 +108,38 @@ public class GameController {
         if (status == GameStatus.gameEnded || status == GameStatus.idle) {
             return;
         }
-        board.getTileAt(x, y).flag();
+        Board.getBoard().getTileAt(x, y).flag();
         if (listener != null) {
             listener.onBoardChanged();
         }
     }
 
     public void restart() {
-        System.out.println("Game Restarted");
-        createBoard(row, column, mineNum);
-        this.board.print();
+        if(isCustom)
+        {
+            System.out.println("Game Restarted with previous settings");
+            createBoard(row, column, mineNum, hasMineClearance, hasMiniMine, hasRadar);
+        }
+        else
+        {
+            System.out.println("Game Restarted");
+            Random rand = new Random();
+            createBoard(row, column, mineNum, rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean());
+        }
+        Board.getBoard().print();
     }
 
+    //for regular dificulties
     public void setDifficulty(int row, int col, int mines) {
-        createBoard(row, col, mines);
+        isCustom = false;
+        Random rand = new Random();
+        createBoard(row, col, mines, rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean());
+    }
+
+    //for custom difficulty
+    public void setDifficulty(int row, int col, int mines, boolean hasMineClearance, boolean hasRadar, boolean hasMiniMine) {
+        isCustom = true;
+        createBoard(row, col, mines, hasMineClearance, hasRadar, hasMiniMine);
     }
 
     public int getRow() {

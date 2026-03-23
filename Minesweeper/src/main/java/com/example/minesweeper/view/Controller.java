@@ -130,14 +130,13 @@ public class Controller implements Initializable, GameListener {
 
     public void displayGamePlane() {
         gameGridPane.getChildren().clear();
-        Board board = Board.getBoard();
         int rows = gameController.getRow();
         int cols = gameController.getColumn();
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                board.getTileAt(i, j).getTileView().setOnMouseClicked(this::tileClick);
-                gameGridPane.add(board.getTileAt(i, j).getTileView(), j, i);
+                Board.getBoard().getTileAt(i, j).getTileView().setOnMouseClicked(this::tileClick);
+                gameGridPane.add(Board.getBoard().getTileAt(i, j).getTileView(), j, i);
             }
         }
     }
@@ -164,13 +163,13 @@ public class Controller implements Initializable, GameListener {
 
 
     @FXML
-    public void restart(ActionEvent event) {
+    public void restart() {
         applyFaceStyle("face-normal");
         gameController.restart();
     }
 
     @FXML
-    public void closeGame(MouseEvent event) {
+    public void closeGame() {
         Platform.exit();
     }
 
@@ -210,7 +209,7 @@ public class Controller implements Initializable, GameListener {
             //when input is legal, close,or confirm action is no longer consumed
             dialog.showAndWait().ifPresent(result -> {
                 if (result == confirmButtonType) {
-                    gameController.setDifficulty(controller.getRows(), controller.getCols(), controller.getMines());
+                    gameController.setDifficulty(controller.getRows(), controller.getCols(), controller.getMines(),controller.isMineClearance(),controller.isMiniMine(),controller.isRadar());
                 }
             });
         } catch (IOException e) {

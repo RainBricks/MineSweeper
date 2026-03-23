@@ -7,7 +7,6 @@ import com.example.minesweeper.tileview.TileView;
 public class Tile {
 
     protected int minesAround;
-    protected Board board;
     protected int x;
     protected int y;
     protected TileView tileView;
@@ -18,7 +17,6 @@ public class Tile {
         this.tileView = new TileView();
         this.x = x;
         this.y = y;
-        this.board = Board.getBoard();
         tileView.setUserData(new int[]{x,y});
     }
 
@@ -27,25 +25,25 @@ public class Tile {
     {
         if(status == TileStatus.flagged)
         {
-            this.board.print();
+            Board.getBoard().print();
             System.out.println("This tile is flagged!");
             return true;
         }
 
         if(status != TileStatus.opened)
         {
-            if(status == TileStatus.closed)this.board.incScore();//increase the score
+            if(status == TileStatus.closed)Board.getBoard().incScore();//increase the score
             status = TileStatus.opened;
             updateView();
             System.out.println("Tile at " + this.x + " , " + this.y + "is clicked");
 
             if(minesAround != 0){
-                this.board.print();
+                Board.getBoard().print();
                 return true;
             }
 
             triggerMinesAround();
-            this.board.print();
+            Board.getBoard().print();
         }
 
         return true;
@@ -58,7 +56,7 @@ public class Tile {
         if(status != TileStatus.closed)return;//if not closed then stop recursion
 
         status = TileStatus.opened;//open the tile
-        this.board.incScore();//increase the score
+        Board.getBoard().incScore();//increase the score
 
         updateView();
         //System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
@@ -83,7 +81,7 @@ public class Tile {
         {
             for(int j = y - 1;j <= y + 1;j++)
             {
-                if(board.getTileAt(i,j) != null && !(i == x && j == y))board.getTileAt(i,j).trigger();
+                if(Board.getBoard().getTileAt(i,j) != null && !(i == x && j == y))Board.getBoard().getTileAt(i,j).trigger();
             }
         }
     }
@@ -95,14 +93,14 @@ public class Tile {
             status = TileStatus.flagged;
             tileView.update(status);
             System.out.println("Tile at " + this.x + " , " + this.y + "is flagged");
-            this.board.print();
+            Board.getBoard().print();
         }
         else if(status == TileStatus.flagged)
         {
             status = TileStatus.closed;
             tileView.update(status);
             System.out.println("Tile at " + this.x + " , " + this.y + "is unflagged");
-            this.board.print();
+            Board.getBoard().print();
         }
 
     }

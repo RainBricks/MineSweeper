@@ -1,5 +1,6 @@
 package com.example.minesweeper.tile;
 
+import com.example.minesweeper.board.Board;
 import com.example.minesweeper.enums.TileStatus;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
@@ -17,7 +18,7 @@ public class Radar extends Tile{
     public boolean click() {
         //if it's not opened, then do the operations
         if (status != TileStatus.opened) {
-            this.board.getTileAt(mineX,mineY).flag();
+            Board.getBoard().getTileAt(mineX,mineY).flag();
             System.out.println("Random Mine is Flagged!");
         }
 
@@ -33,7 +34,7 @@ public class Radar extends Tile{
         tileView.update(this.status);//update status
         System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
 
-        this.board.incScore();//increase the score
+        Board.getBoard().incScore();//increase the score
         if(this.minesAround != 0)return;//if this a numbered tile then stop recursion
 
         super.triggerMinesAround();

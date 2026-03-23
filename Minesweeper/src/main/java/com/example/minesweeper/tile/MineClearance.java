@@ -1,5 +1,6 @@
 package com.example.minesweeper.tile;
 
+import com.example.minesweeper.board.Board;
 import com.example.minesweeper.enums.TileStatus;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
@@ -15,7 +16,7 @@ public class MineClearance extends Tile{
 
         //if it's not opened, then do the operations
         if (status != TileStatus.opened) {
-            this.board.makeShielded();
+            Board.getBoard().makeShielded();
             System.out.println("Shield enabled!");
         }
 
@@ -32,7 +33,7 @@ public class MineClearance extends Tile{
         tileView.update(this.status);//update status
         System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
 
-        this.board.incScore();//increase the score
+        Board.getBoard().incScore();//increase the score
         if(this.minesAround != 0)return;//if this a numbered tile then stop recursion
 
         super.triggerMinesAround();
@@ -50,7 +51,7 @@ public class MineClearance extends Tile{
 
         tileView.playShieldAnime();
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
-        pause.setOnFinished(e -> {
+        pause.setOnFinished(_ -> {
             tileView.update(this.minesAround);//update current view
         });
         pause.play();

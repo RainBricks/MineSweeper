@@ -1,5 +1,6 @@
 package com.example.minesweeper.tile;
 
+import com.example.minesweeper.board.Board;
 import com.example.minesweeper.enums.TileStatus;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
@@ -14,8 +15,8 @@ public class MiniMine extends Tile{
 
 
         if(status != TileStatus.opened) {
-            this.board.makeGettingMinus();
-            this.board.decScore();
+            Board.getBoard().makeGettingMinus();
+            Board.getBoard().decScore();
             System.out.println("You got minus point!");
         }
         return super.click();
@@ -32,7 +33,7 @@ public class MiniMine extends Tile{
         tileView.update(this.status);//update status
         System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
 
-        this.board.incScore();//increase the score
+        Board.getBoard().incScore();//increase the score
 
         if(this.minesAround != 0)return;//if this a numbered tile then stop recursion
 
@@ -51,7 +52,7 @@ public class MiniMine extends Tile{
 
         tileView.playMinusAnime();
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
-        pause.setOnFinished(e -> {
+        pause.setOnFinished(_ -> {
             tileView.update(this.minesAround);//update current view
         });
         pause.play();
