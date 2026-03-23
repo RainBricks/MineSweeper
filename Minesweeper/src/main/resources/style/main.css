@@ -185,14 +185,41 @@
 }
 
 
-/* Tiles */
-.tile {
-    -fx-padding: 0;
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
-    -fx-border-width: 1;
-    -fx-border-insets: 0;
-    -fx-transition: -fx-scale-x 0.1s, -fx-scale-y 0.1s;
 
+.horizontal-border {
+    -fx-background-image: url("../images/border_hor.png");
+    -fx-background-repeat: repeat-x;
+    -fx-background-size: auto 100%;
+}
+
+.vertical-border {
+    -fx-background-image: url("../images/border_vert.png");
+    -fx-background-repeat: repeat-y;
+    -fx-background-size: 100% auto;
+}
+
+.container-panel {
+    -fx-background-color: #454a4d;
+}
+
+
+.restart-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-pref-width: 40px;
+    -fx-pref-height: 40px;
+}
+
+
+.face-normal   { -fx-background-image: url("../images/face_unpressed.png"); }
+.face-pressed  { -fx-background-image: url("../images/face_pressed.png"); }
+.face-win      { -fx-background-image: url("../images/win.png"); }
+.face-lose     { -fx-background-image: url("../images/lose.png"); }
+
+
+.restart-button:pressed {
+    -fx-background-image: url("../images/face_pressed.png");
 }

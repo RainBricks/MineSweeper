@@ -5,54 +5,37 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.shape.Line?>
+
 <VBox fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.minesweeper.view.Controller" stylesheets="@../style/main.css">
 
     <AnchorPane fx:id="titleBar" prefHeight="25" styleClass="titlebar-background">
-
-        <HBox alignment="CENTER_LEFT" spacing="8"
-              AnchorPane.leftAnchor="10"
-              AnchorPane.topAnchor="0"
-              AnchorPane.bottomAnchor="0">
-
+        <HBox alignment="CENTER_LEFT" spacing="10" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
             <StackPane styleClass="title-icon">
                 <Label styleClass="title-icon-image"/>
             </StackPane>
-
             <Label text="Minesweeper" styleClass="title-text" />
         </HBox>
 
-        <StackPane styleClass="close-icon-button"
-                   onMouseClicked="#closeGame"
-                   AnchorPane.rightAnchor="5"
-                   AnchorPane.topAnchor="2">
-            <Line endX="12" endY="12"
-                  styleClass="close-line"/>
-            <Line startX="12" endY="12"
-                  styleClass="close-line"/>
+        <StackPane styleClass="close-icon-button" onMouseClicked="#closeGame" AnchorPane.rightAnchor="5" AnchorPane.topAnchor="2">
+            <Line endX="12" endY="12" styleClass="close-line"/>
+            <Line startX="12" endY="12" styleClass="close-line"/>
         </StackPane>
-
     </AnchorPane>
 
-    <AnchorPane prefHeight="20">
+    <AnchorPane prefHeight="20" minHeight="20">
         <ImageView fitHeight="20" fitWidth="20" AnchorPane.leftAnchor="0">
             <Image url="@../images/corner_up_left.png"/>
         </ImageView>
-
-        <ImageView fx:id="upperBoarder" fitHeight="20" fitWidth="276" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
-            <Image url="@../images/border_hor.png"/>
-        </ImageView>
-
+        <Region styleClass="horizontal-border" prefHeight="20"
+                AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" />
         <ImageView fitHeight="20" fitWidth="20" AnchorPane.rightAnchor="0">
             <Image url="@../images/corner_up_right.png"/>
         </ImageView>
     </AnchorPane>
 
     <AnchorPane prefHeight="50" styleClass="container-panel">
-        <ImageView fitHeight="51" fitWidth="20" AnchorPane.leftAnchor="0">
-            <Image url="@../images/border_vert.png"/>
-        </ImageView>
+        <Region styleClass="vertical-border" prefWidth="20" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"/>
 
         <GridPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="0">
             <columnConstraints>
@@ -61,7 +44,7 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="20" />
             </columnConstraints>
 
-            <HBox alignment="CENTER_LEFT"  GridPane.columnIndex="0" GridPane.halignment="LEFT">
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="0">
                 <ComboBox fx:id="difficulty" styleClass="minesweeper-combo">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
@@ -71,63 +54,51 @@
                             <String fx:value="Custom" />
                         </FXCollections>
                     </items>
-                    <value>
-                        <String fx:value="Easy" />
-                    </value>
+                    <value><String fx:value="Easy" /></value>
                 </ComboBox>
             </HBox>
 
-            <StackPane GridPane.columnIndex="1" GridPane.halignment="CENTER">
+            <StackPane GridPane.columnIndex="1">
                 <Button fx:id="restartButton" onAction="#restart" styleClass="restart-button"/>
             </StackPane>
 
-            <HBox fx:id="scoreCounterContainer"  alignment="CENTER_RIGHT" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
-                <!--<Label fx:id="scoreLabel" text="Score: 0" styleClass="score-label"/>-->
-                <!--<fx:include source="Counter.fxml" />-->
-            </HBox>
+            <HBox fx:id="scoreCounterContainer" alignment="CENTER_RIGHT" GridPane.columnIndex="2" />
         </GridPane>
 
-        <ImageView fitHeight="51" fitWidth="20" AnchorPane.rightAnchor="0">
-            <Image url="@../images/border_vert.png"/>
-        </ImageView>
+        <Region styleClass="vertical-border" prefWidth="20" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"/>
     </AnchorPane>
 
-    <AnchorPane prefHeight="20" VBox.vgrow="NEVER">
+    <AnchorPane prefHeight="20" minHeight="20">
         <ImageView fitHeight="20" fitWidth="20" AnchorPane.leftAnchor="0">
             <Image url="@../images/t_left.png"/>
         </ImageView>
-
-        <ImageView fx:id="middleBoarder" fitHeight="20" fitWidth="276" AnchorPane.rightAnchor="20">
-            <Image url="@../images/border_hor.png"/>
-        </ImageView>
-
+        <Region styleClass="horizontal-border" prefHeight="20"
+                AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" />
         <ImageView fitHeight="20" fitWidth="20" AnchorPane.rightAnchor="0">
             <Image url="@../images/t_right.png"/>
         </ImageView>
     </AnchorPane>
 
-    <AnchorPane prefHeight="50" styleClass="container-panel">
-        <ImageView fx:id="middleLeftBoarder" fitHeight="276" fitWidth="20" AnchorPane.leftAnchor="0">
-            <Image url="@../images/border_vert.png"/>
-        </ImageView>
+    <AnchorPane styleClass="container-panel" VBox.vgrow="ALWAYS">
+        <Region styleClass="vertical-border" prefWidth="20"
+                AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"/>
 
-        <GridPane fx:id="gameGridPane" alignment="CENTER" styleClass="game-grid" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+        <GridPane fx:id="gameGridPane" alignment="CENTER" styleClass="game-grid"
+                  stylesheets="@../style/tile.css"
+                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0"
+                  AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
         </GridPane>
 
-        <ImageView fx:id="middleRightBoarder" fitHeight="276" fitWidth="20" AnchorPane.rightAnchor="0">
-            <Image url="@../images/border_vert.png"/>
-        </ImageView>
+        <Region styleClass="vertical-border" prefWidth="20"
+                AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"/>
     </AnchorPane>
 
-    <AnchorPane prefHeight="10" VBox.vgrow="NEVER">
+    <AnchorPane prefHeight="20" minHeight="20">
         <ImageView fitHeight="20" fitWidth="20" AnchorPane.leftAnchor="0">
             <Image url="@../images/corner_bottom_left.png"/>
         </ImageView>
-
-        <ImageView fx:id="lowerBoarder" fitHeight="20" fitWidth="276" AnchorPane.rightAnchor="20.0">
-            <Image url="@../images/border_hor.png"/>
-        </ImageView>
-
+        <Region styleClass="horizontal-border" prefHeight="20"
+                AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" />
         <ImageView fitHeight="20" fitWidth="20" AnchorPane.rightAnchor="0">
             <Image url="@../images/corner_bottom_right.png"/>
         </ImageView>

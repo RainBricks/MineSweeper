@@ -2,67 +2,55 @@ package com.example.minesweeper.tileview;
 
 import com.example.minesweeper.enums.TileStatus;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.minesweeper.consts.UIConsts.TILE_SIZE;
 
 public class TileView extends Button {
 
+    private String currentStatusClass;
+
     public TileView() {
         super();
-        this.setTileStyle();
-        this.setImageWithStatus(TileStatus.closed);
+
+        //this is not implemented in css because it might cause a conflict
+        this.setTileSize();
+
+        //current styleclass is null, so anything added will become father styleclass
+        this.getStyleClass().add("tile");
+
+        this.update(TileStatus.closed);
     }
 
     public void update(int minesAround) {
-        this.setImageWithNumber(minesAround);
-        //System.out.println("TileView::update complete");
+        applyStatusStyle("tile-num-" + minesAround);
     }
 
     public void update(TileStatus status) {
-        this.setImageWithStatus(status);
+        applyStatusStyle("tile-" + status.name());
     }
 
-    public void playRadarAnime() {
-        this.setImage("radar.gif");
-    }
+    public void playRadarAnime()  { applyStatusStyle("tile-radar"); }
+    public void playMinusAnime()  { applyStatusStyle("tile-minus"); }
+    public void playShieldAnime() { applyStatusStyle("tile-shield"); }
 
-    public void playMinusAnime() {this.setImage("minus.gif");}
-
-    public void playShieldAnime() {this.setImage("shield.gif");}
-
-    private void setImageWithNumber(int minesAround) {
-        this.setImage(minesAround + ".png");
-    }
-
-    private void setImageWithStatus(TileStatus status) {
-        this.setImage(status + ".png");
-    }
-
-    private void setImage(String imageName) {
-        InputStream input = this.getClass().getResourceAsStream("/images/" + imageName);
-        if (input == null) {
-            System.out.println("TileView::setImage failed: path is not found for " + imageName);
-            return;
+    private void applyStatusStyle(String newStyleClass) {
+        if (currentStatusClass != null) {
+            this.getStyleClass().remove(currentStatusClass);
         }
 
-        Image image = new Image(input);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(TILE_SIZE);
-        imageView.setFitHeight(TILE_SIZE);
-        imageView.setPreserveRatio(false);
+        if (!this.getStyleClass().contains(newStyleClass)) {
+            this.getStyleClass().add(newStyleClass);
+        }
 
-        super.setGraphic(imageView);
+        this.currentStatusClass = newStyleClass;
+
     }
 
-
-    private void setTileStyle() {
-        super.setMinSize(TILE_SIZE, TILE_SIZE);
-        super.setPrefSize(TILE_SIZE, TILE_SIZE);
-        super.setMaxSize(TILE_SIZE, TILE_SIZE);
-        super.getStyleClass().add("tile");
+    private void setTileSize() {
+        this.setMinSize(TILE_SIZE, TILE_SIZE);
+        this.setPrefSize(TILE_SIZE, TILE_SIZE);
+        this.setMaxSize(TILE_SIZE, TILE_SIZE);
     }
 }
