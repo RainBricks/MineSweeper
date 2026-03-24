@@ -1,7 +1,9 @@
 package com.example.minesweeper.board;
 
+import com.example.minesweeper.enums.GameStatus;
 import com.example.minesweeper.enums.TileStatus;
 import com.example.minesweeper.tile.*;
+import com.example.minesweeper.view.GameListener;
 
 import java.util.Random;
 
@@ -20,26 +22,32 @@ public class Board {
     private boolean hasMiniMine;
     private boolean hasRadar;
 
+    private GameStatus status;
+
     private Board() {
     }
 
-    private static class BoardHolder{
+    private static class BoardHolder {
         private static final Board board = new Board();
     }
 
-    public static Board getBoard()
-    {
+    public static Board getBoard() {
         return BoardHolder.board;
     }
 
-    public void createBoard(int row,int column,int mineNum,boolean hasMineClearance,boolean hasMiniMine,boolean hasRadar) {
+    public GameStatus getStatus() {
+        return status;
+    }
+
+    public void createBoard(int row, int column, int mineNum, boolean hasMineClearance, boolean hasMiniMine, boolean hasRadar) {
         this.hasMineClearance = hasMineClearance;
         this.hasMiniMine = hasMiniMine;
         this.hasRadar = hasRadar;
-        initBoard(row,column,mineNum);
+        this.status = GameStatus.idle;
+        initBoard(row, column, mineNum);
     }
 
-    private void initBoard(int row,int column,int mineNum) {
+    private void initBoard(int row, int column, int mineNum) {
         this.score = 0;
         this.shielded = false;
         this.minusVal = 0;
@@ -48,47 +56,91 @@ public class Board {
         this.mineNum = mineNum;
         this.tiles = new Tile[this.row][this.column];
         //fill in empty tiles
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < column; j++){
-                this.tiles[i][j] = new Tile(i,j);
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                this.tiles[i][j] = new Tile(i, j);
             }
         }
     }
 
-    public void startGame(int x,int y) {
+
+    //return value indicates if the game is still running
+    public void clickAt(int x, int y) {
+        if (status == GameStatus.gameLose || status == GameStatus.gameWin) {
+            return;
+        }
+
+        // Initialize mines on first click
+        if (status == GameStatus.idle) {
+            startGame(x, y);
+            status = GameStatus.gameRunning;
+        }
+
+        Tile target = getTileAt(x, y);
+        if (target == null) return;
+
+        // Process the click outcome
+        if (!target.click()) {
+            // Hit a mine
+            this.status = GameStatus.gameLose;
+            revealAll();
+            System.out.println("You Lose!");
+
+        } else {
+            // Safe click
+            if (win()) {
+                this.status = GameStatus.gameWin;
+                revealAll();
+                System.out.println("You Win!");
+            }
+        }
+    }
+
+    public void flagAt(int x, int y) {
+        if (status == GameStatus.gameWin || status == GameStatus.gameLose || status == GameStatus.idle) {
+            return;
+        }
+        Tile tile = getTileAt(x, y);
+        if (tile != null) {
+            tile.flag();
+        }
+    }
+
+    private void revealAll() {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                tiles[i][j].endgameReveal();
+            }
+        }
+        print();
+    }
+
+    public void startGame(int x, int y) {
         Random random = new Random();
-        int randX = 0,randY = 0;//random number
+        int randX = 0, randY = 0;//random number
 
         int[][] isMine = new int[row][column]; // 1 = Mine, 2 = Clearance, 3 = MiniMine, 4 = Radar
 
-        //System.out.println("Debug pos 1");
-
         //generate mines
-        for(int i = 0;i < this.mineNum;i++)
-        {
+        for (int i = 0; i < this.mineNum; i++) {
             randX = random.nextInt(this.row);
             randY = random.nextInt(this.column);
-            if(randX != x && randY != y && isMine[randX][randY] != 1)
-            {
-                this.tiles[randX][randY] = new Mine(randX,randY);
+            if (randX != x && randY != y && isMine[randX][randY] != 1) {
+                this.tiles[randX][randY] = new Mine(randX, randY);
                 isMine[randX][randY] = 1;
-                for(int j = randX - 1;j <= randX + 1;j++)
-                {
-                    for(int k = randY - 1;k <= randY + 1;k++)
-                    {
-                        if(this.getTileAt(j, k) != null && !(j == randX && k == randY))tiles[j][k].addMinesAround();
+                for (int j = randX - 1; j <= randX + 1; j++) {
+                    for (int k = randY - 1; k <= randY + 1; k++) {
+                        if (this.getTileAt(j, k) != null && !(j == randX && k == randY)) tiles[j][k].addMinesAround();
                     }
                 }
-            }
-            else i--;
+            } else i--;
         }
 
         Tile tempTile;
 
         //generates Radar
-        if(hasRadar)
-        {
-            int minex = randX,miney = randY;
+        if (hasRadar) {
+            int minex = randX, miney = randY;
 
             //search for next valid position
             do {
@@ -99,92 +151,84 @@ public class Board {
             tempTile = new Radar(randX, randY, this.tiles[randX][randY].getMinesAround(), minex, miney);
             this.tiles[randX][randY] = tempTile;
             isMine[randX][randY] = 4;
-
         }
 
-
         //generates MineClearance
-        if(hasMineClearance)
-        {
+        if (hasMineClearance) {
             do {
                 randX = random.nextInt(this.row);
                 randY = random.nextInt(this.column);
             }
-            while(!(randX != x && randY != y && isMine[randX][randY] != 1));
+            while (!(randX != x && randY != y && isMine[randX][randY] != 1));
 
             tempTile = new MineClearance(randX, randY, this.tiles[randX][randY].getMinesAround());
             this.tiles[randX][randY] = tempTile;
             isMine[randX][randY] = 2;
-
         }
 
-
         //generates MiniMine
-        if(hasMiniMine) {
-            do{
+        if (hasMiniMine) {
+            do {
                 randX = random.nextInt(this.row);
                 randY = random.nextInt(this.column);
-            }while(!(randX != x && randY != y && isMine[randX][randY] != 1 && isMine[randX][randY] != 2));
+            } while (!(randX != x && randY != y && isMine[randX][randY] != 1 && isMine[randX][randY] != 2));
 
             tempTile = new MiniMine(randX, randY, this.tiles[randX][randY].getMinesAround());
             this.tiles[randX][randY] = tempTile;
             isMine[randX][randY] = 3;
-
         }
 
-        //System.out.println("Debug pos 2");
         this.print();
     }
 
     public void print() {
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < column; j++){
-                if(this.tiles[i][j].getStatus() == TileStatus.closed) System.out.print("#" + " ");
-                else if(this.tiles[i][j].getStatus() == TileStatus.flagged) System.out.print("F" + " ");
-                else if(this.tiles[i][j].getStatus() == TileStatus.triggered) System.out.print("?" + " ");
-                else if(this.tiles[i][j].getStatus() == TileStatus.opened) System.out.print(tiles[i][j].getMinesAround() + " ");
-                else if(this.tiles[i][j].getStatus() == TileStatus.exploded) System.out.print("X" + " ");
-                else if(this.tiles[i][j].getStatus() == TileStatus.minetriggered) System.out.print("B" + " ");
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                if (this.tiles[i][j].getStatus() == TileStatus.closed) System.out.print("#" + " ");
+                else if (this.tiles[i][j].getStatus() == TileStatus.flagged) System.out.print("F" + " ");
+                else if (this.tiles[i][j].getStatus() == TileStatus.triggered) System.out.print("?" + " ");
+                else if (this.tiles[i][j].getStatus() == TileStatus.opened)
+                    System.out.print(tiles[i][j].getMinesAround() + " ");
+                else if (this.tiles[i][j].getStatus() == TileStatus.exploded) System.out.print("X" + " ");
+                else if (this.tiles[i][j].getStatus() == TileStatus.minetriggered) System.out.print("B" + " ");
             }
             System.out.println();
         }
     }
 
-    public Tile getTileAt(int x,int y) {
+    public Tile getTileAt(int x, int y) {
         try {
             return this.tiles[x][y];
-        }catch (ArrayIndexOutOfBoundsException e)
-        {
+        } catch (ArrayIndexOutOfBoundsException e) {
             return null;
         }
     }
 
-    public void incScore(){
+    public void incScore() {
         this.score++;
     }
 
-    public int getScore(){
+    public int getScore() {
         return this.score - this.minusVal;
     }
 
-    public void makeShielded(){
+    public void makeShielded() {
         this.shielded = true;
     }
 
-    public void useShield(){
+    public void useShield() {
         this.shielded = false;
     }
 
-    public boolean isShielded(){
+    public boolean isShielded() {
         return this.shielded;
     }
 
-    public void makeGettingMinus(){
+    public void makeGettingMinus() {
         this.minusVal = 10;
     }
 
-    public boolean win(){
+    public boolean win() {
         return this.score == this.row * this.column - this.mineNum;
     }
-
 }

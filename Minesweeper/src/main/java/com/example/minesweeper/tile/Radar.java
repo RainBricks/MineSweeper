@@ -19,7 +19,7 @@ public class Radar extends Tile{
     public boolean click() {
         //if it's not opened, then do the operations
         if (status != TileStatus.opened) {
-            Board.getBoard().getTileAt(mineX,mineY).flag();
+            Board.getBoard().flagAt(mineX,mineY);
             System.out.println("Random Mine is Flagged!");
         }
 
