@@ -30,36 +30,7 @@ public class Tile {
             return true;
         }
 
-        //if it is opened and numbered
-        if(status == TileStatus.opened && this.minesAround != 0){
-            System.out.println("entering logic");
-            int flagsAround = 0;
-            for(int i = x - 1;i <= x + 1;i++)
-            {
-                for(int j = y - 1;j <= y + 1;j++)
-                {
-                    if((!(i == x && j == y)) && Board.getBoard().getTileAt(i,j) != null)
-                        if(Board.getBoard().getTileAt(i,j).getStatus() == TileStatus.flagged)
-                            flagsAround++;
-                }
-            }
-            System.out.println(flagsAround);
-            if(this.minesAround == flagsAround)
-            {
-                for(int i = x - 1;i <= x + 1;i++)
-                {
-                    for(int j = y - 1;j <= y + 1;j++)
-                    {
-                        if((!(i == x && j == y)) && Board.getBoard().getTileAt(i,j) != null)
-                            if(Board.getBoard().getTileAt(i,j).getStatus() == TileStatus.closed)
-                                Board.getBoard().getTileAt(i,j).click();
-                    }
-                }
-                Board.getBoard().print();
-                return true;
-            }
-        }
-        else
+        if(status != TileStatus.opened)
         {
             if(status == TileStatus.closed)Board.getBoard().incScore();//increase the score
             status = TileStatus.opened;
