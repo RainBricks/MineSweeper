@@ -8,6 +8,8 @@
     -fx-border-width: 0;
 }
 
+
+/* these are game tile status */
 .tile-closed        { -fx-background-image: url("../images/closed.png"); }
 .tile-opened        { -fx-background-image: url("../images/0.png"); }
 .tile-flagged       { -fx-background-image: url("../images/flagged.png"); }
@@ -15,6 +17,7 @@
 .tile-exploded      { -fx-background-image: url("../images/exploded.png"); }
 .tile-minetriggered { -fx-background-image: url("../images/minetriggered.png"); }
 
+/* these are ui tile status */
 .tile-num-0 { -fx-background-image: url("../images/0.png"); }
 .tile-num-1 { -fx-background-image: url("../images/1.png"); }
 .tile-num-2 { -fx-background-image: url("../images/2.png"); }
