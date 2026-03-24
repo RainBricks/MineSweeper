@@ -14,15 +14,13 @@ public class Board {
 
     private int score;
     private boolean shielded;
-    private boolean gotMinus;
     private int minusVal;
 
     private boolean hasMineClearance;
     private boolean hasMiniMine;
     private boolean hasRadar;
 
-    private Board()
-    {
+    private Board() {
     }
 
     private static class BoardHolder{
@@ -34,20 +32,17 @@ public class Board {
         return BoardHolder.board;
     }
 
-    public void createBoard(int row,int column,int mineNum,boolean hasMineClearance,boolean hasMiniMine,boolean hasRadar)
-    {
+    public void createBoard(int row,int column,int mineNum,boolean hasMineClearance,boolean hasMiniMine,boolean hasRadar) {
         this.hasMineClearance = hasMineClearance;
         this.hasMiniMine = hasMiniMine;
         this.hasRadar = hasRadar;
         initBoard(row,column,mineNum);
     }
 
-    private void initBoard(int row,int column,int mineNum)
-    {
+    private void initBoard(int row,int column,int mineNum) {
         this.score = 0;
         this.shielded = false;
-        this.gotMinus = false;
-        this.minusVal = 10;
+        this.minusVal = 0;
         this.row = row;
         this.column = column;
         this.mineNum = mineNum;
@@ -141,8 +136,7 @@ public class Board {
         this.print();
     }
 
-    public void print()
-    {
+    public void print() {
         for(int i = 0; i < row; i++){
             for(int j = 0; j < column; j++){
                 if(this.tiles[i][j].getStatus() == TileStatus.closed) System.out.print("#" + " ");
@@ -156,8 +150,7 @@ public class Board {
         }
     }
 
-    public Tile getTileAt(int x,int y)
-    {
+    public Tile getTileAt(int x,int y) {
         try {
             return this.tiles[x][y];
         }catch (ArrayIndexOutOfBoundsException e)
@@ -169,12 +162,9 @@ public class Board {
     public void incScore(){
         this.score++;
     }
-    public void decScore(){
-        this.score-=minusVal;
-    }
 
     public int getScore(){
-        return this.score;
+        return this.score - this.minusVal;
     }
 
     public void makeShielded(){
@@ -190,16 +180,11 @@ public class Board {
     }
 
     public void makeGettingMinus(){
-        this.gotMinus = true;
+        this.minusVal = 10;
     }
 
     public boolean win(){
-        if(!this.hasMiniMine){
-            return this.score == this.row * this.column - this.mineNum;
-        }else{
-            if(!this.gotMinus) return this.score == this.row * this.column - this.mineNum ;
-            else return this.score == this.row * this.column - this.mineNum - this.minusVal;
-        }
+        return this.score == this.row * this.column - this.mineNum;
     }
 
 }

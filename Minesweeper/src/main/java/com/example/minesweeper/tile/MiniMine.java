@@ -17,7 +17,6 @@ public class MiniMine extends Tile{
 
         if(status != TileStatus.opened) {
             Board.getBoard().makeGettingMinus();
-            Board.getBoard().decScore();
             System.out.println("You got minus point!");
         }
         return super.click();

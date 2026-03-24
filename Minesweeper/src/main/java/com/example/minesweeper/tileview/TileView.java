@@ -11,7 +11,9 @@ public class TileView extends Button {
         super();
 
         //this is not implemented in css because it might cause a conflict
-        this.setTileSize();
+        //this.setMinSize(34, 34);
+        this.setPrefSize(34, 34);
+        //this.setMaxSize(34, 34);
 
         //current styleclass is null, so anything added will become father styleclass
         this.getStyleClass().add("tile");
@@ -44,9 +46,4 @@ public class TileView extends Button {
 
     }
 
-    private void setTileSize() {
-        this.setMinSize(34, 34);
-        this.setPrefSize(34, 34);
-        this.setMaxSize(34, 34);
-    }
 }
