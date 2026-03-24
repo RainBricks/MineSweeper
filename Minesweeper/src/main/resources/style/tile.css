@@ -14,6 +14,9 @@
 .tile-triggered     { -fx-background-image: url("../images/triggered.png"); }
 .tile-exploded      { -fx-background-image: url("../images/exploded.png"); }
 .tile-minetriggered { -fx-background-image: url("../images/minetriggered.png"); }
+.tile-endShield { -fx-background-image: url("../images/shield.png"); }
+.tile-endMinus { -fx-background-image: url("../images/minus.png"); }
+.tile-endRadar { -fx-background-image: url("../images/radar.png"); }
 
 .tile-num-0 { -fx-background-image: url("../images/0.png"); }
 .tile-num-1 { -fx-background-image: url("../images/1.png"); }

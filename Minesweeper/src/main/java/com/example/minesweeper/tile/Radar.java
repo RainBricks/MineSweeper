@@ -44,7 +44,7 @@ public class Radar extends Tile{
     @Override
     public void endgameReveal(){
         System.out.println("Radar is at " + x + " , " + y);
-        status = TileStatus.triggered;
+        status = TileStatus.endRadar;
         tileView.update(status);
     }
 

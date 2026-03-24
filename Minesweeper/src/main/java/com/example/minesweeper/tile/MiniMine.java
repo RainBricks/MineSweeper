@@ -43,7 +43,7 @@ public class MiniMine extends Tile{
     @Override
     public void endgameReveal(){
         System.out.println("Mini Mine is at " + x + " , " + y);
-        status = TileStatus.triggered;
+        status = TileStatus.endMinus;
         tileView.update(status);
     }
 
