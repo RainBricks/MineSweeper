@@ -79,13 +79,12 @@ public class GameController {
     public void restart() {
         if (isCustom) {
             System.out.println("Game Restarted with previous settings");
-            createBoard(row, column, mineNum, hasMineClearance, hasMiniMine, hasRadar);
+            createBoard(row, column, mineNum, hasMineClearance, hasRadar, hasMiniMine);
         } else {
             System.out.println("Game Restarted");
             Random rand = new Random();
             createBoard(row, column, mineNum, rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean());
         }
-        Board.getBoard().print();
     }
 
     //for regular dificulties

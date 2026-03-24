@@ -3,6 +3,7 @@ package com.example.minesweeper.board;
 import com.example.minesweeper.enums.GameStatus;
 import com.example.minesweeper.enums.TileStatus;
 import com.example.minesweeper.tile.*;
+import com.example.minesweeper.tileview.TileView;
 import com.example.minesweeper.view.GameListener;
 
 import java.util.Random;
@@ -45,6 +46,7 @@ public class Board {
         this.hasRadar = hasRadar;
         this.status = GameStatus.idle;
         initBoard(row, column, mineNum);
+        print();
     }
 
     private void initBoard(int row, int column, int mineNum) {
@@ -63,14 +65,13 @@ public class Board {
         }
     }
 
-
     //return value indicates if the game is still running
     public void clickAt(int x, int y) {
         if (status == GameStatus.gameLose || status == GameStatus.gameWin) {
             return;
         }
 
-        // Initialize mines on first click
+        //init mines on first click
         if (status == GameStatus.idle) {
             startGame(x, y);
             status = GameStatus.gameRunning;
@@ -79,21 +80,28 @@ public class Board {
         Tile target = getTileAt(x, y);
         if (target == null) return;
 
-        // Process the click outcome
+        if(target.getStatus() == TileStatus.opened){
+            if(target.getMinesAround() != 0 && target.getMinesAround() == getNumbersOfFlagsAround(x,y)){
+                clickAround(x,y);
+            }
+            return;
+        }
+
         if (!target.click()) {
-            // Hit a mine
+            //clicked a mine
             this.status = GameStatus.gameLose;
             revealAll();
             System.out.println("You Lose!");
 
         } else {
-            // Safe click
+            //safe
             if (win()) {
                 this.status = GameStatus.gameWin;
                 revealAll();
                 System.out.println("You Win!");
             }
         }
+        print();
     }
 
     public void flagAt(int x, int y) {
@@ -104,6 +112,7 @@ public class Board {
         if (tile != null) {
             tile.flag();
         }
+        print();
     }
 
     private void revealAll() {
@@ -178,17 +187,15 @@ public class Board {
             isMine[randX][randY] = 3;
         }
 
-        this.print();
     }
 
-    public void print() {
+    private void print() {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
                 if (this.tiles[i][j].getStatus() == TileStatus.closed) System.out.print("#" + " ");
                 else if (this.tiles[i][j].getStatus() == TileStatus.flagged) System.out.print("F" + " ");
                 else if (this.tiles[i][j].getStatus() == TileStatus.triggered) System.out.print("?" + " ");
-                else if (this.tiles[i][j].getStatus() == TileStatus.opened)
-                    System.out.print(tiles[i][j].getMinesAround() + " ");
+                else if (this.tiles[i][j].getStatus() == TileStatus.opened) System.out.print(tiles[i][j].getMinesAround() + " ");
                 else if (this.tiles[i][j].getStatus() == TileStatus.exploded) System.out.print("X" + " ");
                 else if (this.tiles[i][j].getStatus() == TileStatus.minetriggered) System.out.print("B" + " ");
             }
@@ -196,7 +203,7 @@ public class Board {
         }
     }
 
-    public Tile getTileAt(int x, int y) {
+    private Tile getTileAt(int x, int y) {
         try {
             return this.tiles[x][y];
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -204,12 +211,77 @@ public class Board {
         }
     }
 
+    public TileView getTileViewAt(int x,int y){
+        if (getTileAt(x, y) != null) {
+            return getTileAt(x,y).getTileView();
+        }else {
+            return null;
+        }
+    }
+
+    public void triggerMinesAround(int x,int y) {
+        for(int i = x - 1;i <= x + 1;i++)
+        {
+            for(int j = y - 1;j <= y + 1;j++)
+            {
+                if(getTileAt(i,j) != null && !(i == x && j == y))getTileAt(i,j).trigger();
+            }
+        }
+    }
+
+    public int getNumbersOfFlagsAround(int x,int y){
+        int num = 0;
+        for(int i = x - 1;i <= x + 1;i++)
+        {
+            for(int j = y - 1;j <= y + 1;j++)
+            {
+                if(getTileAt(i,j) != null && !(i == x && j == y)){
+                    if(getTileAt(i,j).getStatus() == TileStatus.flagged)
+                    {
+                        num++;
+                    }
+                }
+            }
+        }
+        return num;
+    }
+
+    public void clickAround(int x,int y){
+        for(int i = x - 1;i <= x + 1;i++)
+        {
+            for(int j = y - 1;j <= y + 1;j++)
+            {
+                if(getTileAt(i,j) != null && !(i == x && j == y))
+                {
+                    if (!getTileAt(i,j).click()) {
+                        //clicked a mine
+                        this.status = GameStatus.gameLose;
+                        revealAll();
+                        System.out.println("You Lose!");
+                        print();
+                        return;
+                    } else {
+                        //safe
+                        if (win()) {
+                            this.status = GameStatus.gameWin;
+                            revealAll();
+                            System.out.println("You Win!");
+                            print();
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        print();
+    }
+
     public void incScore() {
         this.score++;
     }
 
     public int getScore() {
-        return this.score - this.minusVal;
+        return Math.max(this.score - this.minusVal,0);
     }
 
     public void makeShielded() {
@@ -228,7 +300,7 @@ public class Board {
         this.minusVal = 10;
     }
 
-    public boolean win() {
+    private boolean win() {
         return this.score == this.row * this.column - this.mineNum;
     }
 }

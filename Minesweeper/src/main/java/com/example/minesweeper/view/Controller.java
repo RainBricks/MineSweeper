@@ -135,8 +135,8 @@ public class Controller implements Initializable, GameListener {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                Board.getBoard().getTileAt(i, j).getTileView().setOnMouseClicked(this::tileClick);
-                gameGridPane.add(Board.getBoard().getTileAt(i, j).getTileView(), j, i);
+                Board.getBoard().getTileViewAt(i,j).setOnMouseClicked(this::tileClick);
+                gameGridPane.add(Board.getBoard().getTileViewAt(i,j), j, i);
             }
         }
     }
@@ -209,7 +209,7 @@ public class Controller implements Initializable, GameListener {
             //when input is legal, close,or confirm action is no longer consumed
             dialog.showAndWait().ifPresent(result -> {
                 if (result == confirmButtonType) {
-                    gameController.setDifficulty(controller.getRows(), controller.getCols(), controller.getMines(),controller.isMineClearance(),controller.isMiniMine(),controller.isRadar());
+                    gameController.setDifficulty(controller.getRows(), controller.getCols(), controller.getMines(),controller.isMineClearance(),controller.isRadar(),controller.isMiniMine());
                 }
             });
         } catch (IOException e) {

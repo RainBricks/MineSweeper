@@ -21,11 +21,9 @@ public class Tile {
     }
 
     //return value here means if player is alive
-    public boolean click()
-    {
+    public boolean click() {
         if(status == TileStatus.flagged)
         {
-            Board.getBoard().print();
             System.out.println("This tile is flagged!");
             return true;
         }
@@ -38,12 +36,10 @@ public class Tile {
             System.out.println("Tile at " + this.x + " , " + this.y + "is clicked");
 
             if(minesAround != 0){
-                Board.getBoard().print();
                 return true;
             }
 
-            triggerMinesAround();
-            Board.getBoard().print();
+            Board.getBoard().triggerMinesAround(x,y);
         }
 
         return true;
@@ -51,8 +47,7 @@ public class Tile {
     }
 
 
-    protected void trigger()
-    {
+    public void trigger() {
         if(status != TileStatus.closed)return;//if not closed then stop recursion
 
         status = TileStatus.opened;//open the tile
@@ -65,7 +60,7 @@ public class Tile {
             return;//if this a numbered tile then stop recursion
         }
 
-        triggerMinesAround();
+        Board.getBoard().triggerMinesAround(x,y);
         //this.board.print();
     }
 
@@ -75,32 +70,18 @@ public class Tile {
     }
 
 
-    protected void triggerMinesAround()
-    {
-        for(int i = x - 1;i <= x + 1;i++)
-        {
-            for(int j = y - 1;j <= y + 1;j++)
-            {
-                if(Board.getBoard().getTileAt(i,j) != null && !(i == x && j == y))Board.getBoard().getTileAt(i,j).trigger();
-            }
-        }
-    }
-
-    public void flag()
-    {
+    public void flag() {
         if(status == TileStatus.closed)
         {
             status = TileStatus.flagged;
             tileView.update(status);
             System.out.println("Tile at " + this.x + " , " + this.y + "is flagged");
-            Board.getBoard().print();
         }
         else if(status == TileStatus.flagged)
         {
             status = TileStatus.closed;
             tileView.update(status);
             System.out.println("Tile at " + this.x + " , " + this.y + "is unflagged");
-            Board.getBoard().print();
         }
 
     }
@@ -109,11 +90,9 @@ public class Tile {
 
     }
 
-
     public void addMinesAround() {
         this.minesAround ++;
     }
-
 
     public int getMinesAround(){
         return this.minesAround;

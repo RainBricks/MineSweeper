@@ -25,7 +25,7 @@ public class MiniMine extends Tile{
     }
 
     @Override
-    protected void trigger()
+    public void trigger()
     {
         if(status != TileStatus.closed)return;//if not closed then stop recursion
 
@@ -37,7 +37,7 @@ public class MiniMine extends Tile{
 
         if(this.minesAround != 0)return;//if this a numbered tile then stop recursion
 
-        super.triggerMinesAround();
+        Board.getBoard().triggerMinesAround(x,y);
     }
 
     @Override
