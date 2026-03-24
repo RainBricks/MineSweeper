@@ -64,7 +64,7 @@ public class GameController {
         }
         if (status == GameStatus.idle) {
             Board.getBoard().startGame(x, y);
-            status = GameStatus.firstClicked;
+            status = GameStatus.gameRunning;
             if (listener != null) {
                 listener.onBoardChanged();
             }
