@@ -123,7 +123,7 @@ public class Board {
         print();
     }
 
-    public void startGame(int x, int y) {
+    private void startGame(int x, int y) {
         Random random = new Random();
         int randX = 0, randY = 0;//random number
 
