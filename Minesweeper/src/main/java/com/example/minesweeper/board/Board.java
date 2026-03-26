@@ -108,6 +108,7 @@ public class Board {
             return;
         }
         Tile tile = getTileAt(x, y);
+        if(tile.getStatus() == TileStatus.opened) return;
         if (tile != null) {
             tile.flag();
         }
@@ -197,6 +198,9 @@ public class Board {
                 else if (this.tiles[i][j].getStatus() == TileStatus.opened) System.out.print(tiles[i][j].getMinesAround() + " ");
                 else if (this.tiles[i][j].getStatus() == TileStatus.exploded) System.out.print("X" + " ");
                 else if (this.tiles[i][j].getStatus() == TileStatus.minetriggered) System.out.print("B" + " ");
+                else if (this.tiles[i][j].getStatus() == TileStatus.endShield) System.out.print("S" + " ");
+                else if (this.tiles[i][j].getStatus() == TileStatus.endMinus) System.out.print("M" + " ");
+                else if (this.tiles[i][j].getStatus() == TileStatus.endRadar) System.out.print("R" + " ");
             }
             System.out.println();
         }
