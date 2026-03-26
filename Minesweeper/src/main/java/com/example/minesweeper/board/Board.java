@@ -4,7 +4,6 @@ import com.example.minesweeper.enums.GameStatus;
 import com.example.minesweeper.enums.TileStatus;
 import com.example.minesweeper.tile.*;
 import com.example.minesweeper.tileview.TileView;
-import com.example.minesweeper.view.GameListener;
 
 import java.util.Random;
 
@@ -206,7 +205,7 @@ public class Board {
     private Tile getTileAt(int x, int y) {
         try {
             return this.tiles[x][y];
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
             return null;
         }
     }
