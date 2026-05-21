@@ -1,0 +1,33 @@
+.tile {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-background-radius: 0;
+    -fx-background-size: 100% 100%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-width: 0;
+}
+
+.tile-closed        { -fx-background-image: url("../images/closed.png"); }
+.tile-opened        { -fx-background-image: url("../images/0.png"); }
+.tile-flagged       { -fx-background-image: url("../images/flagged.png"); }
+.tile-triggered     { -fx-background-image: url("../images/triggered.png"); }
+.tile-exploded      { -fx-background-image: url("../images/exploded.png"); }
+.tile-minetriggered { -fx-background-image: url("../images/minetriggered.png"); }
+.tile-endShield { -fx-background-image: url("../images/shield.png"); }
+.tile-endMinus { -fx-background-image: url("../images/minus.png"); }
+.tile-endRadar { -fx-background-image: url("../images/radar.png"); }
+
+.tile-num-0 { -fx-background-image: url("../images/0.png"); }
+.tile-num-1 { -fx-background-image: url("../images/1.png"); }
+.tile-num-2 { -fx-background-image: url("../images/2.png"); }
+.tile-num-3 { -fx-background-image: url("../images/3.png"); }
+.tile-num-4 { -fx-background-image: url("../images/4.png"); }
+.tile-num-5 { -fx-background-image: url("../images/5.png"); }
+.tile-num-6 { -fx-background-image: url("../images/6.png"); }
+.tile-num-7 { -fx-background-image: url("../images/7.png"); }
+.tile-num-8 { -fx-background-image: url("../images/8.png"); }
+
+.tile-radar  { -fx-background-image: url("../images/radar.gif"); }
+.tile-minus  { -fx-background-image: url("../images/minus.gif"); }
+.tile-shield { -fx-background-image: url("../images/shield.gif"); }

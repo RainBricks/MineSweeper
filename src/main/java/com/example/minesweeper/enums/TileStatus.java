@@ -1,0 +1,5 @@
+package com.example.minesweeper.enums;
+
+public enum TileStatus {
+    closed,opened,flagged,triggered,exploded,minetriggered, endShield, endMinus, endRadar,
+}

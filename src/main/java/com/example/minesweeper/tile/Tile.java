@@ -1,0 +1,111 @@
+package com.example.minesweeper.tile;
+
+import com.example.minesweeper.board.Board;
+import com.example.minesweeper.enums.TileStatus;
+import com.example.minesweeper.tileview.TileView;
+
+public class Tile {
+
+    protected int minesAround;
+    protected int x;
+    protected int y;
+    protected TileView tileView;
+    protected TileStatus status;
+
+    public Tile(int x, int y) {
+        this.status = TileStatus.closed;
+        this.tileView = new TileView();
+        this.x = x;
+        this.y = y;
+        tileView.setUserData(new int[]{x,y});
+    }
+
+    //return value here means if player is alive
+    public boolean click() {
+        if(status == TileStatus.flagged)
+        {
+            System.out.println("This tile is flagged!");
+            return true;
+        }
+
+        if(status != TileStatus.opened)
+        {
+            if(status == TileStatus.closed)Board.getBoard().incScore();//increase the score
+            status = TileStatus.opened;
+            updateView();
+            System.out.println("Tile at " + this.x + " , " + this.y + "is clicked");
+
+            if(minesAround != 0){
+                return true;
+            }
+
+            Board.getBoard().triggerMinesAround(x,y);
+        }
+
+        return true;
+
+    }
+
+
+    public void trigger() {
+        if(status != TileStatus.closed)return;//if not closed then stop recursion
+
+        status = TileStatus.opened;//open the tile
+        Board.getBoard().incScore();//increase the score
+
+        updateView();
+        //System.out.println("Tile at " + this.x + " , " + this.y + "is triggered");
+
+        if(minesAround != 0){
+            return;//if this a numbered tile then stop recursion
+        }
+
+        Board.getBoard().triggerMinesAround(x,y);
+        //this.board.print();
+    }
+
+    protected void updateView()
+    {
+        tileView.update(this.minesAround);//update status
+    }
+
+
+    public void flag() {
+        if(status == TileStatus.closed)
+        {
+            status = TileStatus.flagged;
+            tileView.update(status);
+            System.out.println("Tile at " + this.x + " , " + this.y + "is flagged");
+        }
+        else if(status == TileStatus.flagged)
+        {
+            status = TileStatus.closed;
+            tileView.update(status);
+            System.out.println("Tile at " + this.x + " , " + this.y + "is unflagged");
+        }
+
+    }
+
+    public void endgameReveal(){
+
+    }
+
+    public void addMinesAround() {
+        this.minesAround ++;
+    }
+
+    public int getMinesAround(){
+        return this.minesAround;
+    }
+
+    public TileView getTileView() {
+        return tileView;
+    }
+
+    public TileStatus getStatus() {
+        return status;
+    }
+
+
+
+}
